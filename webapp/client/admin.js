@@ -8,3 +8,17 @@ Meteor.loginAsAdmin = function(password, callback) {
     userCallback: callback
   });
 };
+
+Template.adminAuth.events({
+  'submit .admin-access': function(e, t) {
+    e.preventDefault();
+    var password = e.target.pwd.value;
+    Meteor.loginAsAdmin(password, function(err, res){
+      if(err) {
+        console.error(err);
+        return;
+      }
+      console.log(res);
+    });
+  }
+});

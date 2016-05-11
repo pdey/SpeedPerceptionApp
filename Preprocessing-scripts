@@ -1,0 +1,7 @@
+# Preprocessing scripts (Run on ubuntu 12.04)
+
+# Crop a gif
+convert input.gif -coalesce -repage 0x0 -crop 520x360+0+30 +repage output.gif
+
+# Convert loop gif to noloop
+gifsicle input.gif --no-loopcount > output.gif

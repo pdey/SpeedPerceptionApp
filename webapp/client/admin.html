@@ -1,0 +1,20 @@
+<template name="admin">
+  <h1> Admin page for data entry and management </h1>
+  {{#if currentUser}}
+    <h2> Welcome Admin</h2>
+  {{else}}
+    {{> adminAuth}}
+  {{/if}}
+</template>
+
+<template name="adminAuth">
+  <form class="admin-access" role="form">
+    <div class="form-group">
+      <label for="pwd">Password:</label>
+      <input type="password" name="pwd" class="form-control" id="pwd">
+    </div>
+    <input type="submit" value="Submit" class="btn btn-primary"/>
+  </form>
+</template>
+
+
