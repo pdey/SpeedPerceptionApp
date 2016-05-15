@@ -1,12 +1,14 @@
 <template name="admin">
-  <h1> Admin page for data entry and management </h1>
+  <h1> Admin Panel </h1>
   {{#if currentUser}}
-    <h2> Welcome Admin</h2>
+    {{> adminConsole}}
   {{else}}
     {{> adminAuth}}
   {{/if}}
 </template>
 
+
+<!-- Admin auth form -->
 <template name="adminAuth">
   <form class="admin-access" role="form">
     <div class="form-group">
@@ -16,5 +18,82 @@
     <input type="submit" value="Submit" class="btn btn-primary"/>
   </form>
 </template>
+
+<!-- Admin Console -->
+<template name="adminConsole">
+  {{> datasetUploader}}
+  {{> datasetViewer}}
+</template>
+
+<!-- Dataset uploader -->
+<template name="datasetUploader">
+  <h2> Upload Dataset </h2>
+  <hr/>
+  <form id='uploadDataset' class='form-inline' method="POST">
+    <input id='csvfileinput' name='csvfileinput' type='file'/>
+    <br/>
+    <button type='submit' class='btn btn-primary'>
+      <span class="glyphicon glyphicon-cloud-upload" aria-hidden="true"></span>
+      Upload
+    </button> 
+  </form>
+  <hr/>  
+</template>
+
+<!-- Dataset viewer -->
+<template name="datasetViewer">
+  <h2> DataSets</h2>
+  <div class="panel-group" id="datasetContainer">
+  {{#each datasets}}
+    {{> singleDataset}}
+  {{/each}}
+  </div>
+  <hr/>
+</template>
+
+<!-- single dataset template -->
+<template name="singleDataset">
+  <div class="panel panel-default">
+      <div class="panel-heading">
+        <h4 class="panel-title">
+          <a data-toggle="collapse" data-parent="#datasetContainer" href="#{{_id}}"><h3>{{name}}</h3></a>
+        </h4>
+      </div>
+      <div id="{{_id}}" class="panel-collapse collapse">
+        <div class="panel-body">
+          <input class="search-input inline" type="Search" placeholder="Search..."/>
+          <div class="checkbox inline">
+            <label><input class='check-video' type="checkbox" value=""/>has GIF</label>
+          </div>
+          <ul> 
+          {{#each searchData}}
+            {{> singleDomain}}
+          {{/each}}
+          </ul>
+        </div>
+      </div>
+    </div>
+</template>
+
+<!-- List of domains for video upload -->
+<template name="singleDomain">
+  <li><h4 class="inline">{{domain}}</h4>
+    {{#if hasVideo ..}}
+      <span class="glyphicon glyphicon-ok" aria-hidden="true"></span>
+    {{else}}
+      <form id='uploadVideo' class='form-inline inline' method="POST">
+        <input id='gifinput' class='inline' name='gifinput' type='file'/>
+        <input name='wpt_test_id' value='{{wpt_test_id}}' type='hidden'/>
+        <input name='dataset_name' value='{{../name}}' type='hidden'/>
+        <button type='submit' class='btn btn-primary'>
+          <span class="glyphicon glyphicon-cloud-upload" aria-hidden="true"></span>
+          Upload GIF
+        </button> 
+      </form>
+    {{/if}}
+  </li>
+</template>
+
+<!-- View uploaded videos metadata -->
 
 

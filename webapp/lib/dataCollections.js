@@ -78,6 +78,9 @@ GifUploads.allow({
 // DataSet loaded from csv files
 DataSets = new Meteor.Collection('datasets');
 
+// Video meta-data
+VideoData = new Meteor.Collection('videos');
+
 // Test video pairs for validating consistent users (selected from a dataset).
 ValidationVideoPairs = new Meteor.Collection('validationVideoPairs');
 

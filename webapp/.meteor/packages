@@ -24,3 +24,5 @@ cfs:gridfs
 momentjs:moment
 iron:router
 accounts-ui
+underscore
+autopublish

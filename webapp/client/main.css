@@ -1,1 +1,5 @@
 /* CSS declarations go here */
+
+.inline {
+  display: inline-block !important;
+}
