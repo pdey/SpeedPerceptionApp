@@ -1,9 +1,9 @@
 <template name="admin">
   <h1> Admin Panel </h1>
   {{#if currentUser}}
-    {{> adminConsole}}
+  {{> adminConsole}}
   {{else}}
-    {{> adminAuth}}
+  {{> adminAuth}}
   {{/if}}
 </template>
 
@@ -23,6 +23,7 @@
 <template name="adminConsole">
   {{> datasetUploader}}
   {{> datasetViewer}}
+  {{> videoPairUpload}}
 </template>
 
 <!-- Dataset uploader -->
@@ -44,9 +45,9 @@
 <template name="datasetViewer">
   <h2> DataSets</h2>
   <div class="panel-group" id="datasetContainer">
-  {{#each datasets}}
+    {{#each datasets}}
     {{> singleDataset}}
-  {{/each}}
+    {{/each}}
   </div>
   <hr/>
 </template>
@@ -54,46 +55,112 @@
 <!-- single dataset template -->
 <template name="singleDataset">
   <div class="panel panel-default">
-      <div class="panel-heading">
-        <h4 class="panel-title">
-          <a data-toggle="collapse" data-parent="#datasetContainer" href="#{{_id}}"><h3>{{name}}</h3></a>
-        </h4>
-      </div>
-      <div id="{{_id}}" class="panel-collapse collapse">
-        <div class="panel-body">
-          <input class="search-input inline" type="Search" placeholder="Search..."/>
-          <div class="checkbox inline">
-            <label><input class='check-video' type="checkbox" value=""/>has GIF</label>
-          </div>
-          <ul> 
-          {{#each searchData}}
-            {{> singleDomain}}
-          {{/each}}
-          </ul>
+    <div class="panel-heading">
+      <h4 class="panel-title">
+        <a data-toggle="collapse" data-parent="#datasetContainer" href="#{{_id}}"><h3>{{name}}</h3></a>
+      </h4>
+    </div>
+    <div id="{{_id}}" class="panel-collapse collapse">
+      <div class="panel-body">
+        <input class="search-input inline" type="Search" placeholder="Search..."/>
+        <div class="checkbox inline">
+          <label><input class='check-video' type="checkbox" value=""/>has GIF</label>
         </div>
+        <ul> 
+          {{#each searchData}}
+          {{> singleDomain}}
+          {{/each}}
+        </ul>
       </div>
     </div>
+  </div>
 </template>
 
 <!-- List of domains for video upload -->
 <template name="singleDomain">
-  <li><h4 class="inline">{{domain}}</h4>
+  <li><h4 class="inline">{{domain}} | {{wpt_test_id}}</h4>
     {{#if hasVideo ..}}
-      <span class="glyphicon glyphicon-ok" aria-hidden="true"></span>
+    <span class="glyphicon glyphicon-ok" aria-hidden="true"></span>
     {{else}}
-      <form id='uploadVideo' class='form-inline inline' method="POST">
-        <input id='gifinput' class='inline' name='gifinput' type='file'/>
-        <input name='wpt_test_id' value='{{wpt_test_id}}' type='hidden'/>
-        <input name='dataset_name' value='{{../name}}' type='hidden'/>
-        <button type='submit' class='btn btn-primary'>
-          <span class="glyphicon glyphicon-cloud-upload" aria-hidden="true"></span>
-          Upload GIF
-        </button> 
-      </form>
+    <form id='uploadVideo' class='form-inline inline' method="POST">
+      <input id='gifinput' class='inline' name='gifinput' type='file'/>
+      <input name='wpt_test_id' value='{{wpt_test_id}}' type='hidden'/>
+      <input name='dataset_name' value='{{../name}}' type='hidden'/>
+      <button type='submit' class='btn btn-primary'>
+        <span class="glyphicon glyphicon-cloud-upload" aria-hidden="true"></span>
+        Upload GIF
+      </button> 
+    </form>
     {{/if}}
   </li>
 </template>
 
-<!-- View uploaded videos metadata -->
+<!-- Video pair data template -->
+<template name="videoPairUpload">
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-lg-6">
+        <h2> Upload Video Pair </h2>
+        <form id='addPair' class='form' method='POST'>
+          <div class="form-group">
+            <label> Dataset: 
+              <select class="form-control" name="dataset">
+                {{#each datasets}}
+                <option value="{{name}}">{{name}}</option> 
+                {{/each}}
+              </select>
+            </label>
+          </div>
+          <div class="form-group">
+            <label> wpt test id 1:
+              <input class="form-control" type="text" name="wpt_test_id_1"/>
+            </label>
+          </div>
+          <div class="form-group">
+            <label> wpt test id 2:
+              <input class="form-control" type="text" name="wpt_test_id_2"/>
+            </label>
+          </div>
+          <div class="form-group">
+            <label>Type: 
+              <select id="dataType" class="form-control" name="type">
+                <option value="test">Test</option>
+                <option value="train">Train</option> 
+              </select>
+            </label>
+          </div>
+          <div id="expectedResult" class="form-group hidden">
+            <label> Expected Result:
+              <select class="form-control" name="result">
+                <option value="1">Test ID 1 loads faster</option>
+                <option value="2">Test ID 2 loads faster</option>
+              </select>
+            </label>
+          </div>
+          <button type='submit' class='btn btn-primary'>
+            <span class="glyphicon glyphicon-upload" aria-hidden="true"></span>
+            Add
+          </button>
+        </form>
+      </div>
+      <div class="col-lg-6">
+        <h2>Uploaded Videos</h2>
+        <ul>
+          {{#each videoPairs}}
+            <li>{{> sinlgeVideoPairDisplay}}</li>
+          {{/each}}
+        </ul>        
+      </div>
+    </div>
+  </div>
+</template>
 
-
+<template name="sinlgeVideoPairDisplay">
+    <span>{{wptId_1}}, {{wptId_2}}, {{dataset}}, {{type}}, {{result}}</span>
+    <form id='removeVideoPair' class='form-inline inline'>
+      <input type='hidden' name='pairid' value='{{_id}}'/>
+      <button type='submit' class='btn btn-danger'>
+        <span class='glyphicon glyphicon-remove' aria-hidden='true'></span>
+      </button>
+    </form>
+</template>

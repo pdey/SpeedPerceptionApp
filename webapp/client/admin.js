@@ -24,7 +24,7 @@ Template.adminAuth.events({
   }
 });
 //======================================================
- 
+
 
 /* Template: datasetUploader */
 Template.datasetUploader.events({
@@ -52,25 +52,25 @@ Template.datasetUploader.events({
       var lines = _.filter(csv.split('\n'), function(l) {return ! _.isEmpty(l);});
       var headers = _.first(lines).split(',');
       var rows = _.chain(lines).rest()
-        .map(
-          function(line) {
-            return _.chain(line.split(','))
-              .map(function(v){return _.isNaN(Number(v))? v: Number(v);})
-              .value();
-          })
-        .value();
+      .map(
+        function(line) {
+          return _.chain(line.split(','))
+          .map(function(v){return _.isNaN(Number(v))? v: Number(v);})
+          .value();
+        })
+      .value();
 
       var obj = _.chain(rows)
-        .map(
-          function(row) {
-            var o = {};
-            _.each(_.zip(headers, row),
-              function(p){
-                o[p[0]] = p[1];
-              });
-            return o;
-          })
-        .value();
+      .map(
+        function(row) {
+          var o = {};
+          _.each(_.zip(headers, row),
+            function(p){
+              o[p[0]] = p[1];
+            });
+          return o;
+        })
+      .value();
       return obj;
     }
   }
@@ -92,7 +92,7 @@ Template.datasetViewer.helpers({
 Template.singleDataset.helpers({
   searchData: function() {
     _deps.depend();
-    var res = this.data;
+    var res = _.sortBy(this.data, "domain");
 
     if(domainSearchCriteria.input) {
       res = _.filter(res, function(d){
@@ -137,11 +137,11 @@ Template.singleDomain.events({
       }
       // Insert into video data.
       VideoData.insert(
-        {
-          dataset: dataset_name,
-          wptId: wpt_test_id,
-          fileId: fileObj._id
-        });
+      {
+        dataset: dataset_name,
+        wptId: wpt_test_id,
+        fileId: fileObj._id
+      });
     });
   } 
 });
@@ -156,4 +156,86 @@ Template.singleDomain.helpers({
     return false;
   }
 });
+//=====================================================================
 
+/* Train/Test data uploader */
+Template.videoPairUpload.helpers({
+  datasets: function() {
+    return DataSets.find();
+  },
+
+  videoPairs: function() {
+    return VideoPairs.find({}, {sort: {dataset: 1}});
+  }
+});
+
+Template.videoPairUpload.events({
+  'change #dataType': function(e, t) {
+    e.preventDefault();
+    var selection = t.$('form #dataType').val();
+    switch(selection) {
+      case 'test':
+      t.$('form #expectedResult').addClass('hidden');
+      break;
+      case 'train':
+      t.$('form #expectedResult').removeClass('hidden');
+      break;
+    }
+  },
+
+  'submit #addPair': function(e, t) {
+    e.preventDefault();
+    var dataset = e.target.dataset.value;
+    var wptId_1 = e.target.wpt_test_id_1.value;
+    var wptId_2 = e.target.wpt_test_id_2.value;
+    var type = e.target.type.value;
+    var result = e.target.result.value;
+    console.log(dataset, wptId_1, wptId_2, type, result);
+    if(validate()) {
+      var newPair = {};
+      newPair.dataset = dataset;
+      newPair.wptId_1 = wptId_1;
+      newPair.wptId_2 = wptId_2;
+      newPair.type = type;
+      if(newPair.type == 'train') {
+        newPair.result = result;
+      }  
+
+      VideoPairs.insert(newPair);
+      return true;
+    }
+
+    // form validation
+    function validate() {
+      var ds = DataSets.findOne({name: dataset});
+      var data = ds.data;
+      var has_id_1 = _.findWhere(data, {wpt_test_id: wptId_1});
+      var has_id_2 = _.findWhere(data, {wpt_test_id: wptId_2});
+      if(has_id_1 && has_id_2) {
+        // Check if videos are uploaded.
+        if(! VideoData.findOne({wptId: wptId_1})) {
+          console.error("No vidoes found for test id: " + wptId_1);
+          return false;
+        }
+        if(! VideoData.findOne({wptId: wptId_2})) {
+          console.error("No vidoes found for test id: " + wptId_2);
+          return false;  
+        }
+      } else {
+        console.error("Invalid test ids");
+        return false;
+      }
+      return true;
+    }
+  }
+});
+
+Template.sinlgeVideoPairDisplay.events({
+  'submit #removeVideoPair': function(e, t) {
+    e.preventDefault();
+    var dbId = e.target.pairid.value;
+    // Remove from db
+    VideoPairs.remove({_id: dbId});
+    return true;
+  }
+});

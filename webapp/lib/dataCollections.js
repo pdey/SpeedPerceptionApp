@@ -81,11 +81,8 @@ DataSets = new Meteor.Collection('datasets');
 // Video meta-data
 VideoData = new Meteor.Collection('videos');
 
-// Test video pairs for validating consistent users (selected from a dataset).
-ValidationVideoPairs = new Meteor.Collection('validationVideoPairs');
-
 // Video pairs curated from a dataset.
-TestVideoPairs = new Meteor.Collection('testVideoPairs');
+VideoPairs = new Meteor.Collection('videoPairs');
 
 // Results of experiment.
 TestResults = new Meteor.Collection('testResults');
