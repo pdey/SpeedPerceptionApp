@@ -1,19 +1,32 @@
 <!-- Landing page template -->
 <template name="home">
   <h1> Home Page </h1>
-  {{> gifView}}
+  {{> abTest}}
 </template>
 
 <template name="gifView">
-  <div class="well text-center">
+  <div class="well text-center form-group">
     <div class="col-md-12"></div>
     <div class="row">
-        <div class="col-md-6">
-          <img src="esteelauder.gif">
-        </div>
-        <div class="col-md-6">
-          <img src="esteelauder.gif">
-        </div>
+      <div class="col-md-6 first-gif">
+        <!-- First gif will load here -->
+      </div>
+      <div class="col-md-6 second-gif">
+        <!-- Second gif will load here -->
+      </div>
     </div>
   </div>
+</template>
+
+<template name="abTest">
+  <form class='form' id="speedComparison">
+    {{> gifView}}
+    <div class="container text-center">
+      <button class='btn btn-default btn-primary left-btn'><span>Left</span></button>
+      <button class='btn btn-default btn-secondary mid-btn'><span>Same</span></button>
+      <button class='btn btn-default btn-primary right-btn'><span>Right</span></button>
+    </div>
+    <button class='btn btn-default btn-secondary replay-btn'><span class="glyphicon glyphicon-repeat"></span> Replay</button>
+    <button class='btn btn-default btn-success show-next'><span class="glyphicon glyphicon-arrow-right"></span>Next</button>    
+  </form>
 </template>
