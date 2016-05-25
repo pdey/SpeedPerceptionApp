@@ -24,8 +24,35 @@ Template.adminAuth.events({
   }
 });
 //======================================================
+// Helper functions for converting collection array to csv.
+function jsonArrToCsv(jsonArr) {
+  var headers = _.keys(_.first(jsonArr)).join(',');
+  var rows = _.chain(jsonArr)
+              .map(function(r) {return _.values(r).join(',');})
+              .value();
+  var csvStr = headers + '\n';
+  _.each(rows, function(r) {
+    csvStr += r + '\n';
+  });
+  return csvStr;
+}
 
+// This creates a link and triggers a click event on that link
+function dispatchDownload(objectURL, filename) {
+  var link = document.createElement('a');
+  link.href = objectURL;
+  link.download = filename;
+  link.target = '_blank';
 
+  var event = document.createEvent("MouseEvents");
+  event.initMouseEvent(
+    "click", true, false, window, 0, 0, 0, 0, 0
+    , false, false, false, false, 0, null
+  );
+  link.dispatchEvent(event);
+}
+
+//======================================================
 /* Template: datasetUploader */
 Template.datasetUploader.events({
   // submit csv dataset
@@ -121,6 +148,50 @@ Template.singleDataset.events({
     var checked = e.target.checked;
     domainSearchCriteria.hasVideo = checked;
     _deps.changed();
+  },
+
+  // Download dataset
+  'submit #downloadDataset': function(e, t) {
+    e.preventDefault();
+    var datasetId = e.target.datasetId.value;
+    console.log("Downloading dataset :" + datasetId);
+    var dataset = DataSets.findOne({_id: datasetId});
+    var name = dataset.name;
+    var data = dataset.data;
+    var csvStr = jsonArrToCsv(data);
+    var blob = new Blob([csvStr], {type:'text/csv'});
+    var objectURL = window.URL.createObjectURL(blob);
+    dispatchDownload(objectURL, name +'.csv');
+  },
+
+  // Download results
+  'submit #downloadResults': function(e, t) {
+    e.preventDefault();
+    var datasetId = e.target.datasetId.value;
+    console.log("Downloading results for dataset: " + datasetId);
+    var name = DataSets.findOne({_id: datasetId}).name;
+    var results = [];
+    var pairs = VideoPairs.find({datasetId: datasetId}).fetch();
+    _.each(pairs, function(pair) {
+      var pairId = pair._id;
+      var tests = TestResults.find({pairId: pairId}).fetch();
+      _.each(tests, function(test) {
+        results.push({
+          session: test.session,
+          wpt_test_id_1: pair.wptId_1,
+          wpt_test_id_2: pair.wptId_2,
+          type: pair.type,
+          expected: (pair.result)?pair.result:'None',
+          result: test.result
+        });
+      });
+    });
+    var csvStr = jsonArrToCsv(results);
+    var blob = new Blob([csvStr], {type:'text/csv'});
+    var objectURL = window.URL.createObjectURL(blob);
+    var date = moment().format('MM-DD-YYYY');
+    var filename = name + '-results-' + date + '.csv';
+    dispatchDownload(objectURL, filename);
   }
 });
 
@@ -185,15 +256,15 @@ Template.videoPairUpload.events({
 
   'submit #addPair': function(e, t) {
     e.preventDefault();
-    var dataset = e.target.dataset.value;
+    var datasetId = e.target.dataset.value;
     var wptId_1 = e.target.wpt_test_id_1.value;
     var wptId_2 = e.target.wpt_test_id_2.value;
     var type = e.target.type.value;
     var result = e.target.result.value;
-    console.log(dataset, wptId_1, wptId_2, type, result);
+    console.log(datasetId, wptId_1, wptId_2, type, result);
     if(validate()) {
       var newPair = {};
-      newPair.dataset = dataset;
+      newPair.datasetId = datasetId;
       newPair.wptId_1 = wptId_1;
       newPair.wptId_2 = wptId_2;
       newPair.type = type;
@@ -207,7 +278,7 @@ Template.videoPairUpload.events({
 
     // form validation
     function validate() {
-      var ds = DataSets.findOne({name: dataset});
+      var ds = DataSets.findOne({_id: datasetId});
       var data = ds.data;
       var has_id_1 = _.findWhere(data, {wpt_test_id: wptId_1});
       var has_id_2 = _.findWhere(data, {wpt_test_id: wptId_2});
