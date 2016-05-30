@@ -1,0 +1,26 @@
+<!-- People page -->
+<template name="people">
+  <div class="container">
+    <div class="row">
+      <div class="col-sm-10 col-sm-offset-2">
+        <h2>Team SpeedPerception</h2>
+          {{#each teamMembers}}  
+            {{>peopleProfile}}
+          {{/each}}
+      </div>
+    </div>
+  </div>
+</template>
+
+<template name="peopleProfile">
+  <div class="col-sm-4">
+    <div class="circle"><a href="{{website}}" target="_blank">
+      <div class="img-circle"><img class="img-circle" width="150px" src="{{photo}}" alt="img">
+      </div>
+    </a></div>
+    <div id="profiles">
+      <h4 class="heading">{{name}}</h4>
+      <p>{{designation}}<br><a href="{{company_website}}" target="_blank" style="text-decoration: none; color:#666">{{company_name}}</a></p>
+    </div>
+  </div>
+</template>
