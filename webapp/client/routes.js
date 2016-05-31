@@ -9,17 +9,23 @@ Router.configure({
 // Home route
 Router.route('/', {
 	action: function() {
-		this.render('home');
+		this.render('about');
 	}       
 });
 
-// Admin route
-Router.route('/admin', {
+// SpeedPerception experiment page.
+Router.route('/challenge', {
 	action: function() {
-		this.render('admin');
+		this.render('home');
 	}
 });
 
+// Download page
+Router.route('/download', {
+	action: function() {
+		this.render('download');
+	}
+});
 
 // People page
 Router.route('/people', {
@@ -66,5 +72,12 @@ Router.route('/people', {
 Router.route('/about', {
 	action: function() {
 		this.render('about');
+	}
+});
+
+// Admin route
+Router.route('/admin', {
+	action: function() {
+		this.render('admin');
 	}
 });

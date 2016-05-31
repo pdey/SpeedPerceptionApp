@@ -33,3 +33,18 @@
   height: 150px;
   border-radius: 50%;
 }
+
+.navbar-brand {
+  font-size: xx-large;
+}
+
+.navbar-nav li a {
+  font-size: large;
+}
+
+.navbar-brand,
+.navbar-nav li a {
+    line-height: 100px;
+    height: 100px;
+    padding-top: 0;
+}
