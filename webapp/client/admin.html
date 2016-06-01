@@ -70,6 +70,7 @@
         {{> downloadResults}}
         {{> downloadDataset}}        
         <ul> 
+          <li><span>Total {{searchData.length}} results</span></li>
           {{#each searchData}}
           {{> singleDomain}}
           {{/each}}
@@ -124,11 +125,21 @@
               <input class="form-control" type="text" name="wpt_test_id_2"/>
             </label>
           </div>
+          
           <div class="form-group">
             <label>Type: 
               <select id="dataType" class="form-control" name="type">
                 <option value="test">Test</option>
                 <option value="train">Train</option> 
+              </select>
+            </label>
+          </div>
+          <div id="criteria" class="form-group">
+            <label>Criteria No:
+              <select class="form-control" name="criteriaNo">
+                {{#each selectionCriteria}}
+                  <option value="{{condition}}">{{condition}}</option>
+                {{/each}}
               </select>
             </label>
           </div>
@@ -147,10 +158,10 @@
         </form>
       </div>
       <div class="col-lg-6">
-        <h2>Uploaded Videos</h2>
+        <h2>Uploaded Videos (Total: {{countPairs}})</h2>
         <ul>
           {{#each videoPairs}}
-            <li>{{> sinlgeVideoPairDisplay}}</li>
+            <li>{{> singleVideoPairDisplay}}</li>
           {{/each}}
         </ul>        
       </div>
@@ -158,8 +169,14 @@
   </div>
 </template>
 
-<template name="sinlgeVideoPairDisplay">
-    <span>{{wptId_1}}, {{wptId_2}}, {{dataset}}, {{type}}, {{result}}</span>
+<template name="singleVideoPairDisplay">
+    <span>{{datasetName datasetId}}, {{wptId_1}}, {{wptId_2}}, {{type}},
+    {{#if result}}
+      {{result}}
+    {{else}} 
+      {{criteria}}
+    {{/if}}
+    </span>
     <form id='removeVideoPair' class='form-inline force-inline'>
       <input type='hidden' name='pairid' value='{{_id}}'/>
       <button type='submit' class='btn btn-danger'>

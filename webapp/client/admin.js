@@ -182,7 +182,8 @@ Template.singleDataset.events({
           wpt_test_id_2: pair.wptId_2,
           type: pair.type,
           expected: (pair.result)?pair.result:'None',
-          result: test.result
+          result: test.result,
+          criteria: (pair.criteria)?pair.criteria:'None'
         });
       });
     });
@@ -235,8 +236,19 @@ Template.videoPairUpload.helpers({
     return DataSets.find();
   },
 
+  selectionCriteria: function() {
+    return _.map(_.range(1, 17, 1),
+              function(i) {
+                return {'condition': i};
+              });
+  },
+
   videoPairs: function() {
     return VideoPairs.find({}, {sort: {dataset: 1}});
+  },
+
+  countPairs: function() {
+    return VideoPairs.find().count();
   }
 });
 
@@ -247,9 +259,11 @@ Template.videoPairUpload.events({
     switch(selection) {
       case 'test':
       t.$('form #expectedResult').addClass('hidden');
+      t.$('form #criteria').removeClass('hidden');
       break;
       case 'train':
       t.$('form #expectedResult').removeClass('hidden');
+      t.$('form #criteria').addClass('hidden');
       break;
     }
   },
@@ -259,6 +273,7 @@ Template.videoPairUpload.events({
     var datasetId = e.target.dataset.value;
     var wptId_1 = e.target.wpt_test_id_1.value;
     var wptId_2 = e.target.wpt_test_id_2.value;
+    var criteria = e.target.criteriaNo.value;
     var type = e.target.type.value;
     var result = e.target.result.value;
     console.log(datasetId, wptId_1, wptId_2, type, result);
@@ -268,8 +283,11 @@ Template.videoPairUpload.events({
       newPair.wptId_1 = wptId_1;
       newPair.wptId_2 = wptId_2;
       newPair.type = type;
+      
       if(newPair.type == 'train') {
         newPair.result = result;
+      } else {
+        newPair.criteria = criteria;
       }  
 
       VideoPairs.insert(newPair);
@@ -301,7 +319,13 @@ Template.videoPairUpload.events({
   }
 });
 
-Template.sinlgeVideoPairDisplay.events({
+Template.singleVideoPairDisplay.helpers({
+  datasetName: function(id) {
+    return DataSets.findOne({_id:id}).name;
+  }
+});
+
+Template.singleVideoPairDisplay.events({
   'submit #removeVideoPair': function(e, t) {
     e.preventDefault();
     var dbId = e.target.pairid.value;

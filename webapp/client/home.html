@@ -2,6 +2,8 @@
 <template name="home">
   <h1> Which of the 2 websites load faster? </h1>
   {{> abTest}}
+  {{> guide_modal}}
+  {{> thanks_modal}}
 </template>
 
 <template name="gifView">
@@ -29,4 +31,70 @@
     <button class='btn btn-default btn-secondary replay-btn'><span class="glyphicon glyphicon-repeat"></span> Replay</button>
     <button class='btn btn-default btn-success show-next'><span class="glyphicon glyphicon-arrow-right"></span>Next</button>    
   </form>
+</template>
+
+<!-- Modals -->
+<template name="guide_modal">
+  <div class="modal fade" id="guideModal" role="dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2 class="modal-title">How To Play</h2>
+      </div>
+      <div class="modal-body">
+        <span>{{> instructions}}</span>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default btn-success start-play"><span class="glyphicon glyphicon-arrow-right"></span>Start
+        </button>
+      </div>
+    </div>
+  </div>
+</template>
+
+<template name="instructions">
+  <ol>
+    <li>
+      <h4>Watch the pair of videos that shows how two websites load. When a video completes the run it turns grey.</h4>
+    </li>
+
+    <li>
+      <h4>Submit your feedback</h4>
+      <ul>
+        <li><h5>Click on <button class='btn btn-default btn-primary disabled'><span>Left</span></button> if website on the left appears to load faster.</h5>
+        </li>
+        <li>
+          <h5>Click on <button class='btn btn-default btn-secondary disabled'><span>Same</span></button> if both websites appear to load appear around the same time.</h5>
+        </li>
+        <li>
+          <h5>Click on <button class='btn btn-default btn-primary disabled'><span>Right</span></button> if right website on the right appears to load faster.</h5>
+        </li>
+      </ul>
+    </li>
+
+    <li>
+      <h4>Click on <button class='btn btn-default btn-secondary disabled'><span class="glyphicon glyphicon-repeat"></span> Replay</button> to watch the same pair videos again.</h4>
+    </li>
+
+    <li>
+      <h4>After submitting your feedback, click on <button class='btn btn-default btn-success disabled'><span class="glyphicon glyphicon-arrow-right"></span>Next</button> to watch another pair of videos.</h4>
+    </li>
+  </ol>
+</template>
+
+
+<template name="thanks_modal">
+  <div class="modal fade" id="thanksModal" role="dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2 class="modal-title">Well Done!</h2>
+      </div>
+      <div class="modal-body">
+        <h4>Thank you for participating and providing us with valuable feedback.</h4>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default btn-success stop-play">Close
+        </button>
+      </div>
+    </div>
+  </div>
 </template>

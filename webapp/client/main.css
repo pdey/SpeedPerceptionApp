@@ -48,3 +48,12 @@
     height: 100px;
     padding-top: 0;
 }
+
+.modal-header {
+  text-align: center;
+}
+
+.modal-body #thanksModal {
+  text-align: center;
+}
+
