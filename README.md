@@ -46,11 +46,11 @@ Webapp were developed under Meteor JS framework.
 
 To install meteor:
 
-curl https://install.meteor.com | sh
+> curl https://install.meteor.com | sh
 
 Checkout and go to webapp/
 
-meteor
+> meteor
 
 App live on localhost:3000
 
