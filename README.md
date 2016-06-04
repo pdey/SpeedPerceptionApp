@@ -7,6 +7,7 @@ We describe here the steps involved in creating a UI that allows people to compa
 
 Clearly, no one likes slow webpages. We want to create a free open-source benchmark dataset to advance the systematic study of how human beings perceive webpage loading process, and the above-fold rendering in particular. The web performance field needs a systematic way to compare algorithms and metrics on a standardized dataset of webpage loading videos. Our belief is that such a benchmark would provide a quantitative basis to compare different algorithms and spur computer scientists to make progress on helping quantify perceived webpage performance.
 
+********************
 Experimental Design
 ********************
 
@@ -37,6 +38,7 @@ psi_diff <= -10
 
 In total, we have 4 * 4 = 16 conditions for pair selection.
 
+********************
 Code (WebApp)
 **************
 
