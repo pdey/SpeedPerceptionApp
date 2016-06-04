@@ -50,27 +50,47 @@ function preloadGifs(url1, url2) {
 
   $('.first-gif').empty();
   $('.second-gif').empty();
-  var firstGif = new Image();
-  var secondGif = new Image();
+  
+  var firstGif = document.createElement('video');
+  $(firstGif).attr('id', 'gifVideo1');
+  $('.first-gif').append($(firstGif));
 
-  firstGif.src = url1;
-  secondGif.src = url2;
+
+  var secondGif = document.createElement('video');
+  $(secondGif).attr('id', 'gifVideo2');
+  $('.second-gif').append($(secondGif));
+
+
+  addSourceToVideo(firstGif, url1, "video/mp4");
+  addSourceToVideo(secondGif, url2, "video/mp4");
 
   var numLoaded = 0;
 
-  firstGif.onload = function() {syncGifLoad(firstGif);};
-  secondGif.onload = function() {syncGifLoad(secondGif);};
+  
+  firstGif.addEventListener("loadeddata", function(){syncGifLoad(firstGif);}, false);
+  secondGif.addEventListener("loadeddata", function(){syncGifLoad(secondGif);}, false);
 
-  function syncGifLoad(imgElem) {
+  firstGif.load(); secondGif.load();
+
+  function addSourceToVideo(element, src, type) {
+    var source = document.createElement('source');    
+    source.src = src;    
+    source.type = type;    
+    element.appendChild(source); 
+  };
+
+  function syncGifLoad(video) {
+    console.log('loaded video');
+    console.log(video);
     numLoaded++;
+    
     if(numLoaded == 2) {
-      $(firstGif).attr('id', 'gifVideo1');
-      $(secondGif).attr('id', 'gifVideo2');
-      $('.first-gif').append($(firstGif));
-      $('.second-gif').append($(secondGif));
+      console.log("Both loaded");
+      firstGif.play();
+      secondGif.play();
       numLoaded = 0;
     }
-  }
+  };
 };
 
 function conclude() {
@@ -100,9 +120,9 @@ Template.abTest.events({
     t.$('.btn-decision').prop('disabled', false);
     t.$('.show-next').prop('disabled', true);
     e.preventDefault();
-    var first = $('#gifVideo1').attr('src');
-    var second = $('#gifVideo2').attr('src');
-
+    var first = $('#gifVideo1 source').attr('src');
+    var second = $('#gifVideo2 source').attr('src');
+    console.log(first, second);
     // Reset
     preloadGifs(first, second);
   },
