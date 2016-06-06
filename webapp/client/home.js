@@ -26,17 +26,18 @@ function getNextVideoPair() {
 
 function getVideoURL(wptId) {
   var videoData = VideoData.findOne({wptId: wptId});
-  var fs = GifUploads.findOne({_id: videoData.fileId});
+  var fs = VideoUploads.findOne({_id: videoData.fileId});
   return fs.url();
 };
 
 function saveResult(comp) {
   console.log(currentPair, comp);
-  TestResults.insert({
-    pairId: currentPair._id,
-    session: Session.get('userSessionKey'),
-    result: comp
-  });
+  Meteor.call('testResults.insert',
+    {
+      pairId: currentPair._id,
+      session: Session.get('userSessionKey'),
+      result: comp  
+    });
 }
 
 function preloadGifs(url1, url2) {

@@ -65,7 +65,7 @@
           <input class="search-input force-inline" type="Search" placeholder="Search..."/>
           <i class="glyphicon glyphicon-search"></i>
         <div class="checkbox force-inline">
-          <label><input class='check-video' type="checkbox" value=""/>has GIF</label>
+          <label><input class='check-video' type="checkbox" value=""/>has Video</label>
         </div>
         {{> downloadResults}}
         {{> downloadDataset}}        
@@ -87,12 +87,12 @@
     <span class="glyphicon glyphicon-ok" aria-hidden="true"></span>
     {{else}}
     <form id='uploadVideo' class='form-inline force-inline' method="POST">
-      <input id='gifinput' class='force-inline' name='gifinput' type='file'/>
+      <input id='mp4input' class='force-inline' name='mp4input' type='file'/>
       <input name='wpt_test_id' value='{{wpt_test_id}}' type='hidden'/>
       <input name='dataset_name' value='{{../name}}' type='hidden'/>
       <button type='submit' class='btn btn-primary'>
         <span class="glyphicon glyphicon-upload" aria-hidden="true"></span>
-        Upload GIF
+        Upload video
       </button> 
     </form>
     {{/if}}

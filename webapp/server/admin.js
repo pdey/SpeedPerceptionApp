@@ -30,3 +30,4 @@ Accounts.registerLoginHandler(function(loginRequest){
     token: stampedToken.token
   }
 });
+

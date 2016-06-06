@@ -68,8 +68,8 @@ Template.datasetUploader.events({
     reader.addEventListener('load', function(event){
       var csv = event.target.result;
       var  objArr = csv2ObjArray(csv);
-      console.log(objArr);
-      DataSets.insert({name: datasetName, data: objArr});
+      // console.log(objArr);
+      Meteor.call('datasets.insert', datasetName, objArr);
     });
 
     reader.readAsText(file);
@@ -201,19 +201,14 @@ Template.singleDomain.events({
     e.preventDefault();
     var dataset_name = e.target.dataset_name.value;
     var wpt_test_id = e.target.wpt_test_id.value;
-    var file = e.target.gifinput.files[0];
-    GifUploads.insert(file, function(err, fileObj){
+    var file = e.target.mp4input.files[0];
+    VideoUploads.insert(file, function(err, fileObj){
       if(err) {
         console.error(err);
         return;
       }
       // Insert into video data.
-      VideoData.insert(
-      {
-        dataset: dataset_name,
-        wptId: wpt_test_id,
-        fileId: fileObj._id
-      });
+      Meteor.call('videos.insert', dataset_name, wpt_test_id, fileObj._id);
     });
   } 
 });
@@ -290,7 +285,7 @@ Template.videoPairUpload.events({
         newPair.criteria = criteria;
       }  
 
-      VideoPairs.insert(newPair);
+      Meteor.call('videoPairs.insert', newPair);
       return true;
     }
 
@@ -330,7 +325,7 @@ Template.singleVideoPairDisplay.events({
     e.preventDefault();
     var dbId = e.target.pairid.value;
     // Remove from db
-    VideoPairs.remove({_id: dbId});
+    Meteor.call('videoPairs.remove', dbId);
     return true;
   }
 });

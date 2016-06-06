@@ -1,12 +1,13 @@
-// Storage for HAR files.
-var harStorage = new FS.Store.GridFS("harUploads");
+// Storage for video files in mp4 format.
+
+var videoStorage = new FS.Store.GridFS("videoUploads");
 
 FS.config.uploadChunkSize = 2 * 1024 * 1024; // Setting 2MB as chunk size
-HarUploads = new FS.Collection("harUploads", {
-	stores: [harStorage]
+VideoUploads = new FS.Collection("videoUploads", {
+	stores: [videoStorage]
 });
 
-HarUploads.deny({
+VideoUploads.deny({
  insert: function(){
  return false;
  },
@@ -21,48 +22,9 @@ HarUploads.deny({
  }
 });
 
-HarUploads.allow({
+VideoUploads.allow({
  insert: function(){
- return true;
- },
- update: function(){
- return true;
- },
- remove: function(){
- return true;
- },
- download: function(){
- return true;
- }
-});
-
-
-// Storage for video files in gif format.
-var gifStorage = new FS.Store.GridFS("gifUploads");
-
-FS.config.uploadChunkSize = 2 * 1024 * 1024; // Setting 2MB as chunk size
-GifUploads = new FS.Collection("gifUploads", {
-	stores: [gifStorage]
-});
-
-GifUploads.deny({
- insert: function(){
- return false;
- },
- update: function(){
- return false;
- },
- remove: function(){
- return false;
- },
- download: function(){
- return false;
- }
-});
-
-GifUploads.allow({
- insert: function(){
- return true;
+   return true;
  },
  update: function(){
  return true;
