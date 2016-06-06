@@ -161,7 +161,7 @@ Template.abTest.onRendered(function(){
   // Reset session every 10 minutes.
   this.refresh_session = setInterval(function(){
     Session.set('userSessionKey', Random.id());
-  }, 60*1000);
+  }, 15*60*1000);
 });
 
 Template.abTest.onDestroyed(function(){
