@@ -52,33 +52,18 @@ function preloadGifs(url1, url2) {
   $('.first-gif').empty();
   $('.second-gif').empty();
   
-  var firstGif = document.createElement('video');
-  $(firstGif).attr('id', 'gifVideo1');
-  $('.first-gif').append($(firstGif));
+  var firstGif = new Image();
+  var secondGif = new Image();
 
-
-  var secondGif = document.createElement('video');
-  $(secondGif).attr('id', 'gifVideo2');
-  $('.second-gif').append($(secondGif));
-
-
-  addSourceToVideo(firstGif, url1, "video/mp4");
-  addSourceToVideo(secondGif, url2, "video/mp4");
+  firstGif.src = url1;
+  secondGif.src = url2;
 
   var numLoaded = 0;
 
-  
-  firstGif.addEventListener("loadeddata", function(){syncGifLoad(firstGif);}, false);
-  secondGif.addEventListener("loadeddata", function(){syncGifLoad(secondGif);}, false);
+  firstGif.onload = function() {syncGifLoad(firstGif);};
+  secondGif.onload = function() {syncGifLoad(secondGif);};
 
   firstGif.load(); secondGif.load();
-
-  function addSourceToVideo(element, src, type) {
-    var source = document.createElement('source');    
-    source.src = src;    
-    source.type = type;    
-    element.appendChild(source); 
-  };
 
   function syncGifLoad(video) {
     console.log('loaded video');
@@ -87,8 +72,10 @@ function preloadGifs(url1, url2) {
     
     if(numLoaded == 2) {
       console.log("Both loaded");
-      firstGif.play();
-      secondGif.play();
+      $(firstGif).attr('id', 'gifVideo1');
+      $(secondGif).attr('id', 'gifVideo2');
+      $('.first-gif').append($(firstGif));
+      $('.second-gif').append($(secondGif));
       numLoaded = 0;
     }
   };
@@ -121,8 +108,8 @@ Template.abTest.events({
     t.$('.btn-decision').prop('disabled', false);
     t.$('.show-next').prop('disabled', true);
     e.preventDefault();
-    var first = $('#gifVideo1 source').attr('src');
-    var second = $('#gifVideo2 source').attr('src');
+    var first = $('#gifVideo1').attr('src');
+    var second = $('#gifVideo2').attr('src');
     console.log(first, second);
     // Reset
     preloadGifs(first, second);

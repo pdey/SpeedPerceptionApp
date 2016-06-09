@@ -2,7 +2,7 @@
 
 var videoStorage = new FS.Store.GridFS("videoUploads");
 
-FS.config.uploadChunkSize = 2 * 1024 * 1024; // Setting 2MB as chunk size
+FS.config.uploadChunkSize = 4 * 1024 * 1024; // Setting 4MB as chunk size.
 VideoUploads = new FS.Collection("videoUploads", {
 	stores: [videoStorage]
 });

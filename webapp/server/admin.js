@@ -4,7 +4,7 @@ Accounts.registerLoginHandler(function(loginRequest){
     return undefined;
   }
 
-  if(loginRequest.password != '$p33dPercept10n') {
+  if(loginRequest.password != Meteor.settings.admin_secret) {
     return null;
   }
 
