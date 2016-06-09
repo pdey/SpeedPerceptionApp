@@ -63,8 +63,6 @@ function preloadGifs(url1, url2) {
   firstGif.onload = function() {syncGifLoad(firstGif);};
   secondGif.onload = function() {syncGifLoad(secondGif);};
 
-  firstGif.load(); secondGif.load();
-
   function syncGifLoad(video) {
     console.log('loaded video');
     console.log(video);
