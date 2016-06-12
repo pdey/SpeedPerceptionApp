@@ -57,3 +57,15 @@
   text-align: center;
 }
 
+body.modal-open{
+  padding-right: 0 !important;
+  overflow-y: auto;
+}
+
+.button-wrapper .btn {
+    margin-bottom: 2px;
+}
+
+.gif-container div {
+  margin-bottom: 10px;
+}

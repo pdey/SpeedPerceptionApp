@@ -57,6 +57,8 @@ Meteor.methods({
   },
 
   'testResults.insert'(obj) {
+    var conn = this.connection;
+    _.extend(obj, {ip: conn.clientAddress, userAgent: conn.httpHeaders['user-agent']});
     TestResults.insert(obj);
   }
 

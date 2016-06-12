@@ -21,9 +21,10 @@ twbs:bootstrap
 cfs:standard-packages
 cfs:gridfs
 momentjs:moment
-iron:router
 accounts-ui
 underscore
 autopublish
 session
 random
+iron:router
+mystor:device-detection

@@ -70,8 +70,8 @@ function preloadGifs(url1, url2) {
     
     if(numLoaded == 2) {
       console.log("Both loaded");
-      $(firstGif).attr('id', 'gifVideo1');
-      $(secondGif).attr('id', 'gifVideo2');
+      $(firstGif).attr('id', 'gifVideo1').addClass('img-responsive');
+      $(secondGif).attr('id', 'gifVideo2').addClass('img-responsive');
       $('.first-gif').append($(firstGif));
       $('.second-gif').append($(secondGif));
       numLoaded = 0;

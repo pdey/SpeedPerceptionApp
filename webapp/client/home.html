@@ -1,6 +1,6 @@
 <!-- Landing page template -->
 <template name="home">
-  <h1> Which of the 2 websites load faster? </h1>
+  <h3> Which of the 2 websites load faster? </h3>
   {{> abTest}}
   {{> guide_modal}}
   {{> thanks_modal}}
@@ -9,7 +9,7 @@
 <template name="gifView">
   <div class="well text-center form-group">
     <div class="col-md-12"></div>
-    <div class="row">
+    <div class="row gif-container">
       <div class="col-md-6 first-gif">
         <!-- First video will load here -->
       </div>
@@ -23,13 +23,25 @@
 <template name="abTest">
   <form class='form' id="speedComparison">
     {{> gifView}}
-    <div class="container text-center">
-      <button class='btn btn-default btn-primary left-btn btn-decision'><span>Left</span></button>
-      <button class='btn btn-default btn-secondary mid-btn btn-decision'><span>Same</span></button>
-      <button class='btn btn-default btn-primary right-btn btn-decision'><span>Right</span></button>
-    </div>
-    <button class='btn btn-default btn-secondary replay-btn'><span class="glyphicon glyphicon-repeat"></span> Replay</button>
-    <button class='btn btn-default btn-success show-next'><span class="glyphicon glyphicon-arrow-right"></span>Next</button>    
+
+    {{#if isPhone}}
+      <div class="btn-group-wrap" align="center">
+        <div class="btn-group-vertical button-wrapper" role="group">
+          <button class='btn btn-lg btn-success left-btn btn-decision'><span>Up</span></button>
+          <button class='btn btn-lg btn-success mid-btn btn-decision'><span>About the Same</span></button>
+          <button class='btn btn-lg btn-success right-btn btn-decision'><span>Down</span></button>
+        </div>
+      </div>
+    {{else}}
+      <div class="container text-center">
+        <button class='btn btn-default btn-success left-btn btn-decision'><span>Left</span></button>
+        <button class='btn btn-default btn-success mid-btn btn-decision'><span>About the Same</span></button>
+        <button class='btn btn-default btn-success right-btn btn-decision'><span>Right</span></button>
+      </div>
+      {{/if}}
+      <br/>
+      <button class='btn btn-lg btn-secondary replay-btn'><span class="glyphicon glyphicon-repeat"></span> Replay</button>
+      <button class='btn btn-lg btn-primary pull-right show-next'><span class="glyphicon glyphicon-arrow-right"></span>Next</button> 
   </form>
 </template>
 
@@ -60,13 +72,15 @@
     <li>
       <h4>Submit your feedback</h4>
       <ul>
-        <li><h5>Click on <button class='btn btn-default btn-primary disabled'><span>Left</span></button> if website on the left appears to load faster.</h5>
+        <li><h5>Click on
+         <button class='btn btn-default btn-success disabled'><span>{{#if isPhone}}Up {{else}}Left{{/if}}</span></button>
+         if website on the left appears to load faster.</h5>
         </li>
         <li>
-          <h5>Click on <button class='btn btn-default btn-secondary disabled'><span>Same</span></button> if both websites appear to load appear around the same time.</h5>
+          <h5>Click on <button class='btn btn-default btn-success disabled'><span>About the Same</span></button> if both websites appear to load appear around the same time.</h5>
         </li>
         <li>
-          <h5>Click on <button class='btn btn-default btn-primary disabled'><span>Right</span></button> if right website on the right appears to load faster.</h5>
+          <h5>Click on <button class='btn btn-default btn-success disabled'><span>{{#if isPhone}}Down{{else}}Right{{/if}}</span></button> if right website on the right appears to load faster.</h5>
         </li>
       </ul>
     </li>
@@ -76,7 +90,7 @@
     </li>
 
     <li>
-      <h4>After submitting your feedback, click on <button class='btn btn-default btn-success disabled'><span class="glyphicon glyphicon-arrow-right"></span>Next</button> to watch another pair of videos.</h4>
+      <h4>After submitting your feedback, click on <button class='btn btn-default btn-primary disabled'><span class="glyphicon glyphicon-arrow-right"></span>Next</button> to watch another pair of videos.</h4>
     </li>
   </ol>
 </template>

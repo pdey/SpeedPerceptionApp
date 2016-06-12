@@ -178,6 +178,8 @@ Template.singleDataset.events({
       _.each(tests, function(test) {
         results.push({
           session: test.session,
+          ip: test.ip,
+          userAgent: test.userAgent.replace(/,/g, ' '),
           wpt_test_id_1: pair.wptId_1,
           wpt_test_id_2: pair.wptId_2,
           type: pair.type,
