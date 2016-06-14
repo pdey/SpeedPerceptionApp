@@ -74,23 +74,23 @@
       <ul>
         <li><h5>Click on
          <button class='btn btn-default btn-success disabled'><span>{{#if isPhone}}Up {{else}}Left{{/if}}</span></button>
-         if website on the left appears to load faster.</h5>
+         if website on the {{#if isPhone}} top {{else}} left {{/if}} appears to load faster.</h5>
         </li>
         <li>
-          <h5>Click on <button class='btn btn-default btn-success disabled'><span>About the Same</span></button> if both websites appear to load appear around the same time.</h5>
+          <h5>Click on <button class='btn btn-default btn-success disabled'><span>About the Same</span></button> if both websites take about the same time to load.</h5>
         </li>
         <li>
-          <h5>Click on <button class='btn btn-default btn-success disabled'><span>{{#if isPhone}}Down{{else}}Right{{/if}}</span></button> if right website on the right appears to load faster.</h5>
+          <h5>Click on <button class='btn btn-default btn-success disabled'><span>{{#if isPhone}}Down{{else}}Right{{/if}}</span></button> if website {{#if isPhone}} at the bottm {{else}} on the right {{/if}} appears to load faster.</h5>
         </li>
       </ul>
     </li>
 
     <li>
-      <h4>Click on <button class='btn btn-default btn-secondary disabled'><span class="glyphicon glyphicon-repeat"></span> Replay</button> to watch the same pair videos again.</h4>
+      <h4>Click on <button class='btn btn-default btn-secondary disabled'><span class="glyphicon glyphicon-repeat"></span> Replay</button> to play them again.</h4>
     </li>
 
     <li>
-      <h4>After submitting your feedback, click on <button class='btn btn-default btn-primary disabled'><span class="glyphicon glyphicon-arrow-right"></span>Next</button> to watch another pair of videos.</h4>
+      <h4>After submitting your feedback, click on <button class='btn btn-default btn-primary disabled'><span class="glyphicon glyphicon-arrow-right"></span>Next</button> to load next pair of videos.</h4>
     </li>
   </ol>
 </template>
