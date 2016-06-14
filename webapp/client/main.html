@@ -8,35 +8,42 @@
 
 <!-- Default layout template -->
 <template name="appLayout">
-     <nav class="navbar navbar-inverse " role="navigation">
-        <div class="container">
-            <div class="navbar-header">
-                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
-                    <span class="sr-only">Toggle navigation</span>
-                </button>
-                <a class="navbar-brand" href="/about">SpeedPerception</a>
-            </div>
-            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-                <ul class="nav navbar-nav pull-right">
-                    <li>
-                      <a href="/challenge">Challenge</a>
-                    </li>
-                    <li>
-                      <a href="/download">Download</a>
-                    </li>
-                    <li>
-                      <a href="/people">People</a>
-                    </li>
-                    <li>
-                      <a href="/about">About</a>
-                    </li>
-                </ul>
-            </div>
-        </div>
-    </nav>
-    <div class="container">
-       {{> yield }}
+  {{> defaultNavbar}}
+  <div class="container">
+   {{> yield }}
+ </div>
+</template>
+
+<template name='defaultNavbar'>
+ <nav class="navbar navbar-inverse" role="navigation">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="/about">SpeedPerception</a>
     </div>
+    <div class="collapse navbar-collapse">
+      <ul class="nav navbar-nav navbar-right">
+        <li>
+          <a data-toggle="collapse" data-target=".in" href="/challenge">Challenge</a>
+        </li>
+        <li>
+          <a data-toggle="collapse" data-target=".in" href="/download">Download</a>
+        </li>
+        <li>
+          <a data-toggle="collapse" data-target=".in" href="/people">People</a>
+        </li>
+        <li>
+          <a data-toggle="collapse" data-target=".in" href="/about">About</a>
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>  
 </template>
 
 <!-- Download page -->
