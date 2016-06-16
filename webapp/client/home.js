@@ -1,32 +1,50 @@
 // Js helpers for the main AB testing templates.
-
+var videosForCurrentSession = null;
 var currentPair = null;
 var curIndex = 0;
 
-function getRandomVideoPair() {
-  var pairs = VideoPairs.find().fetch();
-  var randomPair = _.chain(pairs).shuffle().sample().value();
-  return randomPair;
+// randomly select one video from each condition and all training videos for a  user.
+function selectVideosForUser() {
+  var selectedVideos = VideoPairs.find({type: "train"}).fetch();
+
+  var testVideos = VideoPairs.find({type:"test"}).fetch();
+  var videoGroups = _.groupBy(testVideos, "criteria");
+  _.each(_.keys(videoGroups), function(condition){
+    var videosByCondition = videoGroups[condition];
+    var randomPair = _.chain(videosByCondition).shuffle().sample().value();
+    if(randomPair) {
+      selectedVideos.push(randomPair);
+    }
+  });
+  return _.chain(selectedVideos).shuffle().value();
 };
 
 function getNextVideoPair() {
-  var cursor = VideoPairs.find();
-  var total = cursor.count();
+  if(! videosForCurrentSession) {
+    videosForCurrentSession = selectVideosForUser();
+    console.log("Selected Videos:");
+    console.log(videosForCurrentSession);
+  }
+  var total = _.size(videosForCurrentSession);
   console.log(`total: ${total}, at index: ${curIndex})`);
 
   if(curIndex == total) {
     curIndex = 0;
+    currentPair = null;
+    videosForCurrentSession = null;
     return null;
   }
 
-  var pair = cursor.fetch()[curIndex];
+  var pair = videosForCurrentSession[curIndex];
   curIndex += 1;
   return pair;  
 };
 
 function getVideoURL(wptId) {
   var videoData = VideoData.findOne({wptId: wptId});
+  console.log(wptId, videoData);
   var fs = VideoUploads.findOne({_id: videoData.fileId});
+  console.log(fs);
   return fs.url();
 };
 
@@ -89,7 +107,6 @@ Template.abTest.events({
     t.$('.show-next').prop('disabled', true);
     e.preventDefault();
     // remove current gifs
-    //currentPair = getRandomVideoPair();
     currentPair = getNextVideoPair();
     if(_.isNull(currentPair)) {
       // Done showing all pairs.
