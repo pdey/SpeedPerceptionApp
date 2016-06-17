@@ -48,6 +48,37 @@ function getVideoURL(wptId) {
   return fs.url();
 };
 
+function addEffect(comp) {
+  $('.first-gif').prepend('<div id="overlay1" class="pagination-centered"></div>');
+  var overlay1 = $('#overlay1');
+  var img1 = $('#gifVideo1');  
+  
+  $('.second-gif').prepend('<div id="overlay2" class="pagination-centered"></div>');
+  var overlay2 = $('#overlay2');
+  var img2 = $('#gifVideo2');
+   
+  switch(comp) {
+    case 0:
+      overlay1.addClass("green-overlay");
+      overlay2.addClass("green-overlay");
+      break;
+    case 1:
+      overlay1.addClass("green-overlay");
+      overlay2.addClass("red-overlay");
+      break;
+    case 2:
+      overlay1.addClass("red-overlay");
+      overlay2.addClass("green-overlay");
+      break;
+  }
+
+  overlay1.width(img1.css("width"));
+  overlay1.height(img1.css("height"));
+
+  overlay2.width(img1.css("width"));
+  overlay2.height(img1.css("height"));
+};
+
 function saveResult(comp) {
   console.log(currentPair, comp);
   Meteor.call('testResults.insert',
@@ -56,7 +87,7 @@ function saveResult(comp) {
       session: Session.get('userSessionKey'),
       result: comp  
     });
-}
+};
 
 function preloadGifs(url1, url2) {
   // Remove existing gif images.
@@ -135,6 +166,7 @@ Template.abTest.events({
     t.$('.btn-decision').prop('disabled', true);
     t.$('.show-next').prop('disabled', false);
     e.preventDefault();
+    addEffect(0);
     saveResult(0);
   },
 
@@ -142,6 +174,7 @@ Template.abTest.events({
     t.$('.btn-decision').prop('disabled', true);
     t.$('.show-next').prop('disabled', false);
     e.preventDefault();
+    addEffect(1);
     saveResult(1);
   },
 
@@ -149,6 +182,7 @@ Template.abTest.events({
     t.$('.btn-decision').prop('disabled', true);
     t.$('.show-next').prop('disabled', false);
     e.preventDefault();
+    addEffect(2);
     saveResult(2);
   }
 
