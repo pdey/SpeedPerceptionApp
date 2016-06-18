@@ -70,3 +70,9 @@ body.modal-open{
 .gif-container div {
   margin-bottom: 10px;
 }
+
+img {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+}

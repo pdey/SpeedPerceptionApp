@@ -103,7 +103,7 @@ function conclude() {
 
 Template.abTest.events({
   'click .show-next': function(e, t) {
-    t.$('.btn-decision').prop('disabled', false);
+    t.$('.btn-decision').prop('disabled', false).show();
     t.$('.show-next').prop('disabled', true);
     e.preventDefault();
     // remove current gifs
@@ -120,7 +120,7 @@ Template.abTest.events({
   },
 
   'click .replay-btn': function(e, t) {
-    t.$('.btn-decision').prop('disabled', false);
+    t.$('.btn-decision').prop('disabled', false).show();
     t.$('.show-next').prop('disabled', true);
     e.preventDefault();
     var first = $('#gifVideo1').attr('src');
@@ -134,6 +134,9 @@ Template.abTest.events({
   'click .mid-btn': function(e, t) {
     t.$('.btn-decision').prop('disabled', true);
     t.$('.show-next').prop('disabled', false);
+    t.$('.left-btn').hide();
+    t.$('.right-btn').hide();
+    
     e.preventDefault();
     saveResult(0);
   },
@@ -141,6 +144,9 @@ Template.abTest.events({
   'click .left-btn': function(e, t) {
     t.$('.btn-decision').prop('disabled', true);
     t.$('.show-next').prop('disabled', false);
+    t.$('.mid-btn').hide();
+    t.$('.right-btn').hide();
+    
     e.preventDefault();
     saveResult(1);
   },
@@ -148,10 +154,12 @@ Template.abTest.events({
   'click .right-btn': function(e, t) {
     t.$('.btn-decision').prop('disabled', true);
     t.$('.show-next').prop('disabled', false);
+    t.$('.mid-btn').hide();
+    t.$('.left-btn').hide();
+    
     e.preventDefault();
     saveResult(2);
   }
-
 });
 
 Template.abTest.onRendered(function(){
