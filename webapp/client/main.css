@@ -24,7 +24,7 @@
 }
 
 .media-body {
-  margin-top: 10px;
+    margin-top: 10px;
 }
 
 .circle {
@@ -45,9 +45,9 @@
 
 .navbar-brand,
 .navbar-nav li a {
-  line-height: 80px;
-  height: 80px;
-  padding-top: 0;
+    line-height: 80px;
+    height: 80px;
+    padding-top: 0;
 }
 
 .modal-header {
@@ -64,22 +64,9 @@ body.modal-open{
 }
 
 .button-wrapper .btn {
-  margin-bottom: 2px;
+    margin-bottom: 2px;
 }
 
 .gif-container div {
   margin-bottom: 10px;
-}
-
-
-.red-overlay {
-  display: block;
-  position: absolute;
-  background-color: rgba(200, 50, 50, 0.5);
-}
-
-.green-overlay {
-  display: block;
-  position: absolute;
-  background-color: rgba(50, 200, 50, 0.5);
 }
