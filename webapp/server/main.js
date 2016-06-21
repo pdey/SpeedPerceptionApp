@@ -58,6 +58,11 @@ Meteor.methods({
 
   'testResults.insert'(obj) {
     var conn = this.connection;
+    // de-duplication
+    var existing = TestResults.findOne(_.omit(obj, "result"));
+    if(existing) {
+      TestResults.remove({_id: existing._id});
+    }
     _.extend(obj, {ip: conn.clientAddress, userAgent: conn.httpHeaders['user-agent']});
     TestResults.insert(obj);
   }

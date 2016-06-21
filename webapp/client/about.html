@@ -1,15 +1,23 @@
 <!-- About page -->
 <template name="about">
-  <h2> Objective </h2>
-  <p> Creating an UI allows people to compare the webpage loading process between two webpages, and get their input on which one they think loads faster. </p>
+  <h2> What is SpeedPerception? </h2>
   
-  
-  <p>Clearly, no one likes slow webpages. We want to create a free open-source benchmark dataset to advance the systematic study of how human beings perceive webpage loading process, and the above-fold rendering in particular. The web performance field needs a systematic way to compare algorithms and metrics on a standardized dataset of webpage loading videos. Our belief is that such a benchmark would provide a quantitative basis to compare different algorithms and spur computer scientists to make progress on helping quantify perceived webpage performance.</p>
+  <p>
+  Clearly, no one likes slow webpages. SpeedPerception is a study that is trying to understand what “slow” or “fast” webpage loading means for a human end-user.
+  </p>
+    
+  <p>
+  SpeedPerception is a large-scale web performance crowdsourcing study focused on above-the-fold content of webpages. Traditional web performance metrics from W3C standard focus on timing each process along the content delivering pipeline, such as Time to First Byte and Page Load Time. We want to tackle such problem by looking at it from a different angle, which puts user experience into focus. Since human beings primarily consume the web visually, we focus on visual perception of webpage loading process.
+  </p>
 
-  <h2>What is SpeedPerception?</h2>
-  <p>SpeedPerception is a large-scale web performance crowd-sourcing study focused on above-the-fold content of webpages. Traditional web performance metrics from W3C standard focus on timing each process along the content delivering pipeline, such as Time to First Byte and Page Load Time. We want to tackle such problem by looking at it from a different angle, which puts user experience into focus. Since human beings primarily consume the web visually, we focus on visual perception of webpage loading process.</p>
+  <p>
+  In the current version, SpeedPerception provides sample video pairs generated from WPT using IR500 websites. A total of 21 pairs are displayed during each session, and participants are expected to complete at least one set (21 pairs) of survey.
+  </p>
 
-  <p>In the current version, SpeedPerception provides sample video pairs generated from WPT using IR500 websites. A total of 22 pairs are displayed during each session, and participants are expected to complete at least one set (22 pairs) of survey.</p>
+  <h2>What is the goal of SpeedPerception?</h2>
+  <p>
+  Our goal is to create a free open-source benchmark dataset to advance the systematic study of how human beings perceive webpage loading process, and the above-fold rendering in particular. Our belief (and hope) is that such a benchmark would provide a quantitative basis to compare different algorithms and spur computer scientists to make progress on helping quantify perceived webpage performance. 
+  </p>
 
   <h2>How was SpeedPerception created?</h2>
   <p>We use Patrick Meenan’s open-source WebPagetest (a.k.a WPT), where we tested 300+ URLs from IR500 list on May 2016. Videos were also generated and downloaded from WPT, then incorporated into SpeedPreception after being processed into gif format. Pairs we present are selected under a set of rules to better help us limit the bias and randomness. Due to the property of SpeedIndex (SI), and PerceptualSpeedIndex (PSI), comparison between videos mainly makes sense when they have similar “Visual Complete” (such that the page rendering process finishes in comparable time-frame).</p>
