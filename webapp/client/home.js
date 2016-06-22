@@ -3,15 +3,21 @@ var videosForCurrentSession = null;
 var currentPair = null;
 var curIndex = 0;
 
+var _scoreDeps = new Deps.Dependency;
+var passedTrainingData = {};
+var totalTrainingData = 0;
+
 // randomly select one video from each condition and all training videos for a  user.
 function selectVideosForUser() {
   var selectedVideos = VideoPairs.find({type: "train"}).fetch();
-
+  totalTrainingData = _.size(selectedVideos);
+  console.log(`total training data: ${totalTrainingData}`);
   var testVideos = VideoPairs.find({type:"test"}).fetch();
+  //var testVideos = [];
   var videoGroups = _.groupBy(testVideos, "criteria");
   _.each(_.keys(videoGroups), function(condition){
     var videosByCondition = videoGroups[condition];
-    var randomPair = _.chain(videosByCondition).shuffle().sample().value();
+    var randomPair = _.chain(videosByCondition).sample().value();
     if(randomPair) {
       selectedVideos.push(randomPair);
     }
@@ -22,8 +28,8 @@ function selectVideosForUser() {
 function getNextVideoPair() {
   if(! videosForCurrentSession) {
     videosForCurrentSession = selectVideosForUser();
-    console.log("Selected Videos:");
-    console.log(videosForCurrentSession);
+    //console.log("Selected Videos:");
+    //console.log(videosForCurrentSession);
   }
   var total = _.size(videosForCurrentSession);
   console.log(`total: ${total}, at index: ${curIndex})`);
@@ -32,6 +38,8 @@ function getNextVideoPair() {
     curIndex = 0;
     currentPair = null;
     videosForCurrentSession = null;
+    passedTrainingData = {};
+    totalTrainingData = 0;
     return null;
   }
 
@@ -42,20 +50,28 @@ function getNextVideoPair() {
 
 function getVideoURL(wptId) {
   var videoData = VideoData.findOne({wptId: wptId});
-  console.log(wptId, videoData);
+  //console.log(wptId, videoData);
   var fs = VideoUploads.findOne({_id: videoData.fileId});
-  console.log(fs);
+  //console.log(fs);
   return fs.url();
 };
 
 function saveResult(comp) {
   console.log(currentPair, comp);
+  
   Meteor.call('testResults.insert',
     {
       pairId: currentPair._id,
       session: Session.get('userSessionKey'),
       result: comp  
     });
+  if(currentPair.type == 'train'
+     && currentPair.result == comp) {
+    passedTrainingData[currentPair._id] =1;
+    console.log('passed training data:', _.size(passedTrainingData));
+    _scoreDeps.changed();
+    showProgress();
+  }
 }
 
 function preloadGifs(url1, url2) {
@@ -82,8 +98,6 @@ function preloadGifs(url1, url2) {
   secondGif.onload = function() {syncGifLoad(secondGif);};
 
   function syncGifLoad(video) {
-    console.log('loaded video');
-    console.log(video);
     numLoaded++;
     
     if(numLoaded == 2) {
@@ -100,6 +114,10 @@ function preloadGifs(url1, url2) {
 function conclude() {
   $('#thanksModal').modal('show');  
 };
+
+function showProgress() {
+  $('#scoreModal').modal('show');
+}
 
 Template.abTest.events({
   'click .show-next': function(e, t) {
@@ -125,7 +143,7 @@ Template.abTest.events({
     e.preventDefault();
     var first = $('#gifVideo1').attr('src');
     var second = $('#gifVideo2').attr('src');
-    console.log(first, second);
+    //console.log(first, second);
     // Reset
     preloadGifs(first, second);
   },
@@ -193,7 +211,15 @@ Template.guide_modal.events({
       preloadGifs(
         getVideoURL(currentPair.wptId_1),
         getVideoURL(currentPair.wptId_2));
-    }, 2000);
+    }, 5000);
+  }
+});
+
+Template.thanks_modal.helpers({
+  success_percent: function() {
+    _scoreDeps.depend();
+    //console.log(_.size(passedTrainingData), totalTrainingData);
+    return (_.size(passedTrainingData)*100)/totalTrainingData;
   }
 });
 
@@ -210,3 +236,23 @@ Template.thanks_modal.onRendered(function() {
   });
 });
 
+Template.score_modal.helpers({
+  success_percent: function() {
+    _scoreDeps.depend();
+    //console.log(_.size(passedTrainingData), totalTrainingData);
+    return (_.size(passedTrainingData)*100)/totalTrainingData;
+  }
+});
+
+Template.score_modal.events({
+  'click .score-button': function(e, t) {
+    e.preventDefault();
+    t.$('#scoreModal').modal('hide');
+  }
+});
+
+Template.score_modal.onRendered(function(){
+  $('#scoreModal').on('hidden.bs.modal', function(){
+    $('.show-next').trigger('click');
+  });
+});
