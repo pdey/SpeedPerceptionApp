@@ -59,10 +59,20 @@ Router.route('/people', {
 					company_name: 'instart Logic',
 					company_website: 'https://www.instartlogic.com/'
 				}
+			],
+			coMembers:
+			[
+				{
+					name: 'Patrick Meenan',
+					website: 'https://www.linkedin.com/in/patrickmeenan',
+					photo: 'https://media.licdn.com/media/AAEAAQAAAAAAAAOtAAAAJDhlN2FhZTczLTE3NWYtNDQyYi05NGNmLTBiNjBmODM1NDM5Mw.jpg',
+					designation: 'Founder',
+					company_name: 'WebPagetest LLC',
+					company_website: 'http://www.webpagetest.org/'
+				}
 			]
 		};
 	},
-
 	action: function(){
 		this.render('people');
 	}
