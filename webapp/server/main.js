@@ -40,6 +40,19 @@ Meteor.methods({
     });
   },
 
+  'videos.remove'(datasetName, wptId) {
+    if(! this.userId) {
+      throw new Meteor.Error('not-authorized');
+    }
+    console.log('Removing video');
+    var video = VideoData.findOne({dataset: datasetName, wptId: wptId});
+    if(video) {
+      var fileRef = video.fileId;
+      VideoUploads.remove(fileRef);
+      VideoData.remove(video._id);
+    }
+  },
+
   'videoPairs.insert'(obj) {
     if(! this.userId) {
       throw new Meteor.Error('not-authorized');
@@ -65,6 +78,35 @@ Meteor.methods({
     }
     _.extend(obj, {ip: conn.clientAddress, userAgent: conn.httpHeaders['user-agent']});
     TestResults.insert(obj);
-  }
+  },
 
+  'purge.dataset'(datasetId) {
+    if(! this.userId) {
+      throw new Meteor.Error('not-authorized');
+    }
+    console.log("Purging dataset with id: " + datasetId);
+
+    // Remove all videoPairs
+    var pairs = VideoPairs.find({datasetId: datasetId}).fetch();
+    _.each(pairs, function(p) {
+      // Remove all results
+      var results = TestResults.find({pairId: p._id}).fetch();
+      _.each(results, function(r) {
+        TestResults.remove(r._id);
+      });
+      VideoPairs.remove(p._id);
+    });
+
+    // Remove all files.
+    var dataset = DataSets.findOne({_id: datasetId});
+    var videos = VideoData.find({dataset: dataset.name}).fetch();
+    _.each(videos, function(video){
+      var fileRef = video.fileId;
+      VideoUploads.remove(fileRef);
+      VideoData.remove(video._id);
+    });
+
+    // Remove dataset
+    DataSets.remove(datasetId);
+  }
 });

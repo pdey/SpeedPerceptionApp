@@ -7,7 +7,6 @@
   {{/if}}
 </template>
 
-
 <!-- Admin auth form -->
 <template name="adminAuth">
   <form class="admin-access" role="form">
@@ -59,11 +58,12 @@
       <h4 class="panel-title">
         <a data-toggle="collapse" data-parent="#datasetContainer" href="#{{_id}}"><h3>{{name}}</h3></a>
       </h4>
+      {{> removeDataset}}
     </div>
     <div id="{{_id}}" class="panel-collapse collapse">
       <div class="panel-body">
-          <input class="search-input force-inline" type="Search" placeholder="Search..."/>
-          <i class="glyphicon glyphicon-search"></i>
+        <input class="search-input force-inline" type="Search" placeholder="Search..."/>
+        <i class="glyphicon glyphicon-search"></i>
         <div class="checkbox force-inline">
           <label><input class='check-video' type="checkbox" value=""/>has Video</label>
         </div>
@@ -85,6 +85,13 @@
   <li><h4 class="force-inline">{{domain}} | {{wpt_test_id}}</h4>
     {{#if hasVideo ..}}
     <span class="glyphicon glyphicon-ok" aria-hidden="true"></span>
+    <form id='removeVideo' class='form-inline force-inline' method="POST">
+      <input name='wpt_test_id' value='{{wpt_test_id}}' type='hidden'/>
+      <input name='dataset_name' value='{{../name}}' type='hidden'/>
+      <button type='submit' class='btn btn-danger'>
+        <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
+      </button>
+    </form>
     {{else}}
     <form id='uploadVideo' class='form-inline force-inline' method="POST">
       <input id='mp4input' class='force-inline' name='mp4input' type='file'/>
@@ -138,7 +145,7 @@
             <label>Criteria No:
               <select class="form-control" name="criteriaNo">
                 {{#each selectionCriteria}}
-                  <option value="{{condition}}">{{condition}}</option>
+                <option value="{{condition}}">{{condition}}</option>
                 {{/each}}
               </select>
             </label>
@@ -161,7 +168,7 @@
         <h2>Uploaded Videos (Total: {{countPairs}})</h2>
         <ul>
           {{#each videoPairs}}
-            <li>{{> singleVideoPairDisplay}}</li>
+          <li>{{> singleVideoPairDisplay}}</li>
           {{/each}}
         </ul>        
       </div>
@@ -170,19 +177,19 @@
 </template>
 
 <template name="singleVideoPairDisplay">
-    <span>{{datasetName datasetId}}, {{wptId_1}}, {{wptId_2}}, {{type}},
+  <span>{{datasetName datasetId}}, {{wptId_1}}, {{wptId_2}}, {{type}},
     {{#if result}}
-      {{result}}
+    {{result}}
     {{else}} 
-      {{criteria}}
+    {{criteria}}
     {{/if}}
-    </span>
-    <form id='removeVideoPair' class='form-inline force-inline'>
-      <input type='hidden' name='pairid' value='{{_id}}'/>
-      <button type='submit' class='btn btn-danger'>
-        <span class='glyphicon glyphicon-remove' aria-hidden='true'></span>
-      </button>
-    </form>
+  </span>
+  <form id='removeVideoPair' class='form-inline force-inline'>
+    <input type='hidden' name='pairid' value='{{_id}}'/>
+    <button type='submit' class='btn btn-danger'>
+      <span class='glyphicon glyphicon-remove' aria-hidden='true'></span>
+    </button>
+  </form>
 </template>
 
 
@@ -198,6 +205,15 @@
   <form id='downloadResults' class='form-inline force-inline'>
     <input type='hidden' name='datasetId' value='{{_id}}'/>
     <button type='submit' class="btn btn-default btn-info force-inline"><span class="glyphicon glyphicon-download"></span> Download Results
+    </button>
+  </form>
+</template>
+
+<template name="removeDataset">
+  <form id='removeDataset' class='form-inline force-inline'>
+    <input type='hidden' name='datasetId' value='{{_id}}'/>
+    <button type='submit' class='btn btn-default btn-danger'>
+      Delete
     </button>
   </form>
 </template>

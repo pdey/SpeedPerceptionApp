@@ -195,6 +195,14 @@ Template.singleDataset.events({
     var date = moment().format('MM-DD-YYYY');
     var filename = name + '-results-' + date + '.csv';
     dispatchDownload(objectURL, filename);
+  },
+
+  // Remove a dataset completely
+  'submit #removeDataset': function(e, t) {
+    e.preventDefault();
+    var datasetId = e.target.datasetId.value;
+    console.log("Removing dataset: " + datasetId);
+    Meteor.call('purge.dataset', datasetId);
   }
 });
 
@@ -212,6 +220,13 @@ Template.singleDomain.events({
       // Insert into video data.
       Meteor.call('videos.insert', dataset_name, wpt_test_id, fileObj._id);
     });
+  },
+
+  'submit #removeVideo': function(e, t) {
+    e.preventDefault();
+    var dataset_name = e.target.dataset_name.value;
+    var wpt_test_id = e.target.wpt_test_id.value;
+    Meteor.call('videos.remove', dataset_name, wpt_test_id);
   } 
 });
 
