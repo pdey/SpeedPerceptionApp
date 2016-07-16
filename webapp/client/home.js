@@ -70,12 +70,14 @@ function saveResult(comp) {
     passedTrainingData[currentPair._id] =1;
     console.log('passed training data:', _.size(passedTrainingData));
     _scoreDeps.changed();
-    showProgress();
+    // showProgress();
   }
 }
 
 function preloadGifs(url1, url2) {
   // Remove existing gif images.
+  $('#loaderIcon').show();
+  
   if($('#gifVideo1')) {
     $('#gifVideo1').attr('src', '');
   }
@@ -102,6 +104,7 @@ function preloadGifs(url1, url2) {
     
     if(numLoaded == 2) {
       console.log("Both loaded");
+      $('#loaderIcon').hide();    
       $(firstGif).attr('id', 'gifVideo1').addClass('img-responsive');
       $(secondGif).attr('id', 'gifVideo2').addClass('img-responsive');
       $('.first-gif').append($(firstGif));
@@ -115,9 +118,9 @@ function conclude() {
   $('#thanksModal').modal('show');  
 };
 
-function showProgress() {
-  $('#scoreModal').modal('show');
-}
+// function showProgress() {
+//   $('#scoreModal').modal('show');
+// }
 
 Template.abTest.events({
   'click .show-next': function(e, t) {
