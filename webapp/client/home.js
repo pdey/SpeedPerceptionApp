@@ -7,6 +7,8 @@ var _scoreDeps = new Deps.Dependency;
 var passedTrainingData = {};
 var totalTrainingData = 0;
 
+var videoStartTime = 0;
+
 // randomly select one video from each condition and all training videos for a  user.
 function selectVideosForUser() {
   var selectedVideos = VideoPairs.find({type: "train"}).fetch();
@@ -57,13 +59,17 @@ function getVideoURL(wptId) {
 };
 
 function saveResult(comp) {
+  var curTime = new Date().getTime();
+  var viewingDuration = curTime - videoStartTime;
+  
   console.log(currentPair, comp);
   
   Meteor.call('testResults.insert',
     {
       pairId: currentPair._id,
       session: Session.get('userSessionKey'),
-      result: comp  
+      result: comp,
+      viewDurationInMS: viewingDuration  
     });
   if(currentPair.type == 'train'
      && currentPair.result == comp) {
@@ -109,6 +115,10 @@ function preloadGifs(url1, url2) {
       $(secondGif).attr('id', 'gifVideo2').addClass('img-responsive');
       $('.first-gif').append($(firstGif));
       $('.second-gif').append($(secondGif));
+
+      // start timer
+      videoStartTime = new Date().getTime();
+
       numLoaded = 0;
     }
   };
