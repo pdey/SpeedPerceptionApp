@@ -66,7 +66,7 @@ Router.route('/people', {
 					name: 'Patrick Meenan',
 					website: 'https://www.linkedin.com/in/patrickmeenan',
 					photo: 'https://media.licdn.com/media/AAEAAQAAAAAAAAOtAAAAJDhlN2FhZTczLTE3NWYtNDQyYi05NGNmLTBiNjBmODM1NDM5Mw.jpg',
-					designation: 'Founder / WebPagetest LLC & Staff Engineer / Google',
+					designation: 'Staff Engineer at Google',
 					company_name: 'WebPagetest LLC',
 					company_website: 'http://www.webpagetest.org/'
 				},
