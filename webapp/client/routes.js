@@ -56,7 +56,7 @@ Router.route('/people', {
 					website: 'https://www.linkedin.com/in/prasenjitdey',
 					photo: 'https://media.licdn.com/mpr/mpr/shrinknp_400_400/p/3/005/0b6/3f9/31c2ca6.jpg',
 					designation: 'Software Engineer',
-					company_name: 'instart Logic',
+					company_name: 'Instart Logic',
 					company_website: 'https://www.instartlogic.com/'
 				}
 			],
@@ -66,9 +66,18 @@ Router.route('/people', {
 					name: 'Patrick Meenan',
 					website: 'https://www.linkedin.com/in/patrickmeenan',
 					photo: 'https://media.licdn.com/media/AAEAAQAAAAAAAAOtAAAAJDhlN2FhZTczLTE3NWYtNDQyYi05NGNmLTBiNjBmODM1NDM5Mw.jpg',
-					designation: 'Founder',
+					designation: 'Founder / WebPagetest LLC & Staff Engineer / Google',
 					company_name: 'WebPagetest LLC',
 					company_website: 'http://www.webpagetest.org/'
+				},
+
+				{
+					name: 'Estelle Weyl',
+					website: 'https://www.linkedin.com/in/estellevw',
+					photo: 'https://media.licdn.com/mpr/mpr/shrinknp_400_400/p/5/005/0b1/383/3eed648.jpg',
+					designation: 'Open Web Evangelist',
+					company_name: 'Instart Logic',
+					company_website: 'https://www.instartlogic.com/'
 				}
 			]
 		};
