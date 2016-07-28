@@ -63,21 +63,21 @@ Router.route('/people', {
 			coMembers:
 			[
 				{
-					name: 'Patrick Meenan',
-					website: 'https://www.linkedin.com/in/patrickmeenan',
-					photo: 'https://media.licdn.com/media/AAEAAQAAAAAAAAOtAAAAJDhlN2FhZTczLTE3NWYtNDQyYi05NGNmLTBiNjBmODM1NDM5Mw.jpg',
-					designation: 'Staff Engineer at Google',
-					company_name: 'WebPagetest LLC',
-					company_website: 'http://www.webpagetest.org/'
-				},
-
-				{
 					name: 'Estelle Weyl',
 					website: 'https://www.linkedin.com/in/estellevw',
 					photo: 'https://media.licdn.com/mpr/mpr/shrinknp_400_400/p/5/005/0b1/383/3eed648.jpg',
 					designation: 'Open Web Evangelist',
 					company_name: 'Instart Logic',
 					company_website: 'https://www.instartlogic.com/'
+				},
+				
+				{
+					name: 'Patrick Meenan',
+					website: 'https://www.linkedin.com/in/patrickmeenan',
+					photo: 'https://media.licdn.com/media/AAEAAQAAAAAAAAOtAAAAJDhlN2FhZTczLTE3NWYtNDQyYi05NGNmLTBiNjBmODM1NDM5Mw.jpg',
+					designation: 'Staff Engineer at Google',
+					company_name: 'WebPagetest LLC',
+					company_website: 'http://www.webpagetest.org/'
 				}
 			]
 		};
