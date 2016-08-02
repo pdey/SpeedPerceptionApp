@@ -4,6 +4,7 @@ var currentPair = null;
 var curIndex = 0;
 
 var _scoreDeps = new Deps.Dependency;
+var _progressDeps = new Deps.Dependency;
 var passedTrainingData = {};
 var totalTrainingData = 0;
 
@@ -137,6 +138,9 @@ Template.abTest.events({
     t.$('.btn-decision').prop('disabled', false).show();
     t.$('.show-next').prop('disabled', true);
     e.preventDefault();
+
+    _progressDeps.changed();
+
     // remove current gifs
     currentPair = getNextVideoPair();
     if(_.isNull(currentPair)) {
@@ -268,4 +272,11 @@ Template.score_modal.onRendered(function(){
   $('#scoreModal').on('hidden.bs.modal', function(){
     $('.show-next').trigger('click');
   });
+});
+
+Template.progressbar.helpers({
+  progress: function() {
+    _progressDeps.depend();
+    return Math.ceil(100*(curIndex - 1) / _.size(videosForCurrentSession));
+  }
 });
