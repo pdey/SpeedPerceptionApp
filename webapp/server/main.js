@@ -80,6 +80,21 @@ Meteor.methods({
     TestResults.insert(obj);
   },
 
+  'feedbacks.insert'(feedback, session) {
+    check(feedback, String);
+    check(session, String);
+    if(feedback.length > 200) {
+      feedback = feedback.substring(0, 200);
+    }
+    console.log("Storing user feedback");
+    UserFeedbacks.insert(
+      {
+        session: session,
+        feedback: feedback
+      }
+    );
+  },
+
   'purge.dataset'(datasetId) {
     if(! this.userId) {
       throw new Meteor.Error('not-authorized');

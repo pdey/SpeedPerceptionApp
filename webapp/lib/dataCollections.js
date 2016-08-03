@@ -48,3 +48,6 @@ VideoPairs = new Meteor.Collection('videoPairs');
 
 // Results of experiment.
 TestResults = new Meteor.Collection('testResults');
+
+// User feedback.
+UserFeedbacks = new Meteor.Collection('userFeedbacks');

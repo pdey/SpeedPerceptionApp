@@ -203,7 +203,7 @@ Template.abTest.onRendered(function(){
   // Generate a random hash for this user and store in session
   Session.set('userSessionKey', Random.id());
 
-  // Reset session every 10 minutes.
+  // Reset session every 15 minutes.
   this.refresh_session = setInterval(function(){
     Session.set('userSessionKey', Random.id());
   }, 15*60*1000);
@@ -243,6 +243,16 @@ Template.thanks_modal.helpers({
 Template.thanks_modal.events({
   'click .stop-play': function(e, t) {
     e.preventDefault();
+    t.$('#thanksModal').modal('hide');
+  },
+
+  'click .send-feedback': function(e, t) {
+    e.preventDefault();
+    // feedback
+    var feedback = t.$('#feedback-text').val();
+    if(feedback && feedback.length > 3) {
+      Meteor.call('feedbacks.insert', feedback, Session.get('userSessionKey'));      
+    }
     t.$('#thanksModal').modal('hide');
   }
 });
