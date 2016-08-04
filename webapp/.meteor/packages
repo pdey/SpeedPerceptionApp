@@ -23,9 +23,9 @@ cfs:gridfs
 momentjs:moment
 accounts-ui
 underscore
-autopublish
 session
 random
 iron:router
 mystor:device-detection
 fortawesome:fontawesome
+pcel:loading

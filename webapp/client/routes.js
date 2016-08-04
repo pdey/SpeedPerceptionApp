@@ -15,6 +15,16 @@ Router.route('/', {
 
 // SpeedPerception experiment page.
 Router.route('/challenge', {
+	loadingTemplate: 'loading',
+
+	waitOn: function() {
+		return [
+			Meteor.subscribe('videoPairs'),
+			Meteor.subscribe('videos'),
+			Meteor.subscribe('videoUploads')
+		];
+	},
+
 	action: function() {
 		this.render('home');
 	}
@@ -96,6 +106,18 @@ Router.route('/about', {
 
 // Admin route
 Router.route('/admin', {
+	loadingTemplate: 'loading',
+
+	waitOn: function() {
+		return [
+			Meteor.subscribe('datasets'),
+			Meteor.subscribe('videos'),
+			Meteor.subscribe('videoPairs'),
+			Meteor.subscribe('videoUploads'),
+			Meteor.subscribe('testResults')
+		];
+	},
+
 	action: function() {
 		this.render('admin');
 	}

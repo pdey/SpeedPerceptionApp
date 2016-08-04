@@ -10,6 +10,28 @@ Meteor.startup(() => {
   // code to run on server at startup
 });
 
+// Publications
+Meteor.publish('videoPairs', function() {
+  return VideoPairs.find();
+});
+
+Meteor.publish('videos', function() {
+  return VideoData.find();
+});
+
+Meteor.publish('videoUploads', function() {
+  return VideoUploads.find();
+});
+
+Meteor.publish('datasets', function() {
+  return DataSets.find();
+});
+
+Meteor.publish('testResults', function() {
+  return TestResults.find();
+});
+
+
 Meteor.methods({
   'datasets.insert'(name, data) {
     check(name, String);
