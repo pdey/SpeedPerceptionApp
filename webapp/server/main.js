@@ -72,7 +72,12 @@ Meteor.methods({
   'testResults.insert'(obj) {
     var conn = this.connection;
     // de-duplication
-    var existing = TestResults.findOne(_.omit(obj, "result"));
+    var existing = TestResults.findOne({$and: [
+      {pairId:obj.pairId},
+      {session: obj.session}]
+    });
+    
+    // console.log(existing)
     if(existing) {
       TestResults.remove({_id: existing._id});
     }
