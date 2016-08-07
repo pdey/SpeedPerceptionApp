@@ -30,7 +30,7 @@
   <form class='form' id="speedComparison">
     {{> gifView}}
 
-    {{#if isPhone}}
+    {{#if isPhoneOrTablet}}
       <div class="btn-group-wrap" align="center">
         <div class="btn-group-vertical button-wrapper" role="group">
           <button class='btn btn-lg btn-success left-btn btn-decision'><span>Up</span></button>
@@ -83,14 +83,14 @@
       <h4>Submit your feedback</h4>
       <ul>
         <li><h5>Click on
-         <button class='btn btn-default btn-success disabled'><span>{{#if isPhone}}Up {{else}}Left{{/if}}</span></button>
-         if website on the {{#if isPhone}} top {{else}} left {{/if}} appears to load faster.</h5>
+         <button class='btn btn-default btn-success disabled'><span>{{#if isPhoneOrTablet}}Up {{else}}Left{{/if}}</span></button>
+         if website on the {{#if isPhoneOrTablet}} top {{else}} left {{/if}} appears to load faster.</h5>
         </li>
         <li>
           <h5>Click on <button class='btn btn-default btn-success disabled'><span>About the Same</span></button> if both websites take about the same time to load.</h5>
         </li>
         <li>
-          <h5>Click on <button class='btn btn-default btn-success disabled'><span>{{#if isPhone}}Down{{else}}Right{{/if}}</span></button> if website {{#if isPhone}} at the bottm {{else}} on the right {{/if}} appears to load faster.</h5>
+          <h5>Click on <button class='btn btn-default btn-success disabled'><span>{{#if isPhoneOrTablet}}Down{{else}}Right{{/if}}</span></button> if website {{#if isPhoneOrTablet}} at the bottm {{else}} on the right {{/if}} appears to load faster.</h5>
         </li>
       </ul>
     </li>

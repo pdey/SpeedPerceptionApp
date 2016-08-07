@@ -129,9 +129,19 @@ function conclude() {
   $('#thanksModal').modal('show');  
 };
 
+function isVerticalDisplayDevice() {
+  return (Meteor.Device.isTablet() || Meteor.Device.isPhone());
+}
+
 // function showProgress() {
 //   $('#scoreModal').modal('show');
 // }
+
+Template.abTest.helpers({
+  isPhoneOrTablet: function() {
+    return isVerticalDisplayDevice();
+  }
+});
 
 Template.abTest.events({
   'click .show-next': function(e, t) {
@@ -288,5 +298,11 @@ Template.progressbar.helpers({
   progress: function() {
     _progressDeps.depend();
     return Math.ceil(100*(curIndex - 1) / _.size(videosForCurrentSession));
+  }
+});
+
+Template.instructions.helpers({
+  isPhoneOrTablet: function() {
+    return isVerticalDisplayDevice();
   }
 });
