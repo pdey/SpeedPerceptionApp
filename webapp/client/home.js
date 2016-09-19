@@ -9,6 +9,7 @@ var passedTrainingData = {};
 var totalTrainingData = 0;
 
 var videoStartTime = 0;
+var replayCount = 0;
 
 // randomly select one video from each condition and all training videos for a  user.
 function selectVideosForUser() {
@@ -70,7 +71,8 @@ function saveResult(comp) {
       pairId: currentPair._id,
       session: Session.get('userSessionKey'),
       result: comp,
-      viewDurationInMS: viewingDuration  
+      viewDurationInMS: viewingDuration,
+      repeatCount: replayCount
     });
   if(currentPair.type == 'train'
      && currentPair.result == comp) {
@@ -145,6 +147,7 @@ Template.abTest.helpers({
 
 Template.abTest.events({
   'click .show-next': function(e, t) {
+    replayCount = 0;
     t.$('.btn-decision').prop('disabled', false).show();
     t.$('.show-next').prop('disabled', true);
     e.preventDefault();
@@ -165,6 +168,7 @@ Template.abTest.events({
   },
 
   'click .replay-btn': function(e, t) {
+    replayCount++;
     t.$('.btn-decision').prop('disabled', false).show();
     t.$('.show-next').prop('disabled', true);
     e.preventDefault();

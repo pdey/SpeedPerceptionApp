@@ -107,15 +107,19 @@ Meteor.methods({
     if(existing) {
       TestResults.remove({_id: existing._id});
     }
-    _.extend(obj, {ip: conn.clientAddress, userAgent: conn.httpHeaders['user-agent']});
+    _.extend(obj, {
+        ip: conn.clientAddress,
+        userAgent: conn.httpHeaders['user-agent'],
+        timestamp: new Date() 
+      });
     TestResults.insert(obj);
   },
 
   'feedbacks.insert'(feedback, session) {
     check(feedback, String);
     check(session, String);
-    if(feedback.length > 200) {
-      feedback = feedback.substring(0, 200);
+    if(feedback.length > 500) {
+      feedback = feedback.substring(0, 500);
     }
     console.log("Storing user feedback");
     UserFeedbacks.insert(

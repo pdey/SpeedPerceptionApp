@@ -4,4 +4,4 @@
 convert input.gif -coalesce -repage 0x0 -crop 520x360+0+30 +repage output.gif
 
 # Convert loop gif to noloop
-gifsicle input.gif --no-loopcount > output.gif
+gifsicle input.gif --no-loopcount --optimize 3 > output.gif
