@@ -26,15 +26,15 @@ Difference is calculated as:
 diff(a1, a2) = (a1 - a2) / [(a1 + a2)/2]
 
 Within 5% difference, we subgroup them based on 4 conditions of SI difference:
-1 <= si_diff < 10
-si_diff >= 10
--10 < si_diff <=- 1
-si_diff <=- 10
+1 <= si_diff < 10 , 
+si_diff >= 10 , 
+-10 < si_diff <=- 1 , 
+si_diff <=- 10 ; 
 WIthin each SI difference condition, we subgroup each of them into 4 conditions of PSI difference:
-psi_diff >= 10
-1 <= psi_diff < 10
--10 < psi_diff <= -1
-psi_diff <= -10
+psi_diff >= 10 , 
+1 <= psi_diff < 10 , 
+-10 < psi_diff <= -1 , 
+psi_diff <= -10 ;
 
 In total, we have 4 * 4 = 16 conditions for pair selection.
 
