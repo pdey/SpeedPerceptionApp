@@ -1,0 +1,51 @@
+<template name="stats">
+  {{#if currentUser}}
+    {{> showStats}}
+    {{> showVideosModal}}
+  {{else}}
+  {{> adminAuth}}
+  {{/if}}
+</template>
+
+<template name="showStats">
+  <h3> PairId : {{pairId}}</h3>
+  <button class='btn btn-lg btn-primary show-next'><span class="glyphicon glyphicon-arrow-right"></span>Next</button>
+  <div class="container text-center">
+    <button class='btn btn-lg btn-secondary show-videos'><span class="glyphicon glyphicon-facetime-video"></span> Show Videos</button>  
+  </div>
+  {{> pairStats}}
+</template>
+
+<template name="pairStats">
+  <h4> TTC Distribution </h4>
+  <div class="text-xs-center">
+    <img id="ttc-dist" src="{{ttcDistImgUrl}}" class="img-fluid"/>
+  </div>
+</template>
+
+<template name ="showVideosModal">
+  <div class="modal" id="showVideos" role="dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2 class="modal-title">Gif Videos</h2>
+      </div>
+      <div class="modal-body text-centered">
+        <form class='form' id='visualFeedback'> 
+          {{> gifView}}
+          <div class="container text-center">
+            <button class='btn btn-lg btn-secondary replay-btn'><span class="glyphicon glyphicon-repeat"></span> Replay</button>  
+            <button class='btn btn-lg btn-success time-btn'><span class="glyphicon glyphicon-time"></span>Time it!</button>  
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <div class="pull-left">
+          <h5> Timed at:</h5>
+          <h4 id='timer'></h4> 
+        </div>
+        <button type="button" class="btn btn-default btn-secondary" data-dismiss="modal">Close
+        </button>
+      </div>
+    </div>
+  </div>
+</template>

@@ -131,3 +131,22 @@ Router.route('/admin', {
 		this.render('admin');
 	}
 });
+
+// Stats page
+Router.route('/stats', {
+	loadingTemplate: 'loading',
+
+	waitOn: function() {
+		return [
+			Meteor.subscribe('datasets'),
+			Meteor.subscribe('videos'),
+			Meteor.subscribe('videoPairs'),
+			Meteor.subscribe('videoUploads')
+			// Meteor.subscribe('testResults')
+		];
+	},
+
+	action: function() {
+		this.render('stats')
+	}
+});
