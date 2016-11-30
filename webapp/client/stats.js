@@ -75,7 +75,22 @@ Template.showStats.events({
   },
 
   'click .show-next': function(e, t) {
-    curIndex++;
+    e.preventDefault();
+    var total = VideoPairs.find({type: 'test'}).count();
+    ++curIndex;
+    if (curIndex == total) {
+      curIndex = 0;
+    }
+    _curIndexDeps.changed();
+  },
+
+  'click .show-previous': function(e, t) {
+    e.preventDefault();
+    var total = VideoPairs.find({type: 'test'}).count();
+    --curIndex;
+    if (curIndex == -1) {
+      curIndex = total -1;
+    }
     _curIndexDeps.changed();
   }
 });

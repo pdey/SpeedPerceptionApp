@@ -9,9 +9,10 @@
 
 <template name="showStats">
   <h3> PairId : {{pairId}}</h3>
-  <button class='btn btn-lg btn-primary show-next'><span class="glyphicon glyphicon-arrow-right"></span>Next</button>
+  <button class='btn btn-lg btn-primary pull-left show-previous'><span class="glyphicon glyphicon-arrow-left"></span>Previous</button>
+  <button class='btn btn-lg btn-primary show-next pull-right'><span class="glyphicon glyphicon-arrow-right"></span>Next</button>
   <div class="container text-center">
-    <button class='btn btn-lg btn-secondary show-videos'><span class="glyphicon glyphicon-facetime-video"></span> Show Videos</button>  
+    <button class='btn btn-lg btn-secondary show-videos'><span class="glyphicon glyphicon-facetime-video"></span>Show Videos</button>  
   </div>
   {{> pairStats}}
 </template>
