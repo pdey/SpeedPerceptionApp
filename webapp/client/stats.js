@@ -131,3 +131,26 @@ Template.pairStats.helpers({
     return url;
   }
 });
+
+/* Template: add_comment */
+Template.add_comment.events({
+  'click .submit-comment': function(e, t) {
+    e.preventDefault();
+    var comment = t.$('#comment-text').val();
+    t.$('#comment-text').val("");
+    if(comment && comment.length > 10) {
+      var pairId = VideoPairs.find({type: 'test'}).fetch()[curIndex]._id;
+      Meteor.call('expertComments.insert', comment, pairId);
+    }
+  }
+});
+
+/* Template: show_comments */
+Template.show_comments.helpers({
+  comments: function() {
+    _curIndexDeps.depend();
+    var pairId = VideoPairs.find({type: 'test'}).fetch()[curIndex]._id;
+    var comments = ExpertComments.find({pairId: pairId});
+    return comments;
+  }
+});

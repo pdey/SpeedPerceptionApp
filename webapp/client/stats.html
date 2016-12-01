@@ -15,6 +15,8 @@
     <button class='btn btn-lg btn-secondary show-videos'><span class="glyphicon glyphicon-facetime-video"></span>Show Videos</button>  
   </div>
   {{> pairStats}}
+  {{> add_comment}}
+  {{> show_comments}}
 </template>
 
 <template name="pairStats">
@@ -24,8 +26,32 @@
   </div>
 </template>
 
+<template name="add_comment">
+  <div>
+    <h3>Add A Comment:</h3>
+    <textarea id="comment-text" class="form-control" rows="4"
+    placeholder="Write a comment here...">
+    </textarea>
+    <br/>
+    <button type="button" class="btn btn-default btn-primary submit-comment">Submit</button>
+  </div>
+
+</template>
+
+<template name="show_comments">
+  <div>
+    <ul class="list-unstyled">
+      {{#each comments}}
+      <li>
+        <hr/>
+        <h4><span class="glyphicon glyphicon-comment"></span>  {{comment}}  </h4></li>
+      {{/each}}
+    </ul>
+  </div>
+</template>
+
 <template name ="showVideosModal">
-  <div class="modal" id="showVideos" role="dialog">
+  <div class="modal" id="showVideos" role="dialog" tabindex="-1">
     <div class="modal-content">
       <div class="modal-header">
         <h2 class="modal-title">Gif Videos</h2>

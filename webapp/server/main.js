@@ -31,6 +31,10 @@ Meteor.publish('testResults', function() {
   return TestResults.find();
 });
 
+Meteor.publish('expertComments', function() {
+  return ExpertComments.find();
+});
+
 
 Meteor.methods({
   'datasets.insert'(name, data) {
@@ -120,6 +124,18 @@ Meteor.methods({
         feedback: feedback
       }
     );
+  },
+
+  'expertComments.insert'(comment, pairId) {
+    if (! this.userId) {
+      throw new Meteor.Error('not-authorized');
+    }
+
+    ExpertComments.insert(
+    {
+      pairId: pairId,
+      comment: comment
+    });
   },
 
   'purge.dataset'(datasetId) {

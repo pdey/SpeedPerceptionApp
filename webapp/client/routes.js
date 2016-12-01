@@ -141,8 +141,8 @@ Router.route('/stats', {
 			Meteor.subscribe('datasets'),
 			Meteor.subscribe('videos'),
 			Meteor.subscribe('videoPairs'),
-			Meteor.subscribe('videoUploads')
-			// Meteor.subscribe('testResults')
+			Meteor.subscribe('videoUploads'),
+			Meteor.subscribe('expertComments')
 		];
 	},
 
