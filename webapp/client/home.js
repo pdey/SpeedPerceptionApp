@@ -11,20 +11,22 @@ var totalTrainingData = 0;
 var videoStartTime = 0;
 var replayCount = 0;
 
-// randomly select one video from each condition and all training videos for a  user.
+// randomly select 8 test videos from each condition and 3 training videos for a  user.
 function selectVideosForUser() {
-  var selectedVideos = VideoPairs.find({type: "train"}).fetch();
+  var trainingVideos = VideoPairs.find({type: "train", approved: true}).fetch();
+  // sample 3 training pairs
+  var selectedVideos = _.chain(trainingVideos).sample(3).value();
   totalTrainingData = _.size(selectedVideos);
   console.log(`total training data: ${totalTrainingData}`);
-  var testVideos = VideoPairs.find({type:"test"}).fetch();
-  //var testVideos = [];
-  var videoGroups = _.groupBy(testVideos, "criteria");
-  _.each(_.keys(videoGroups), function(condition){
-    var videosByCondition = videoGroups[condition];
-    var randomPair = _.chain(videosByCondition).sample().value();
-    if(randomPair) {
-      selectedVideos.push(randomPair);
-    }
+
+  // sample 2 test pairs from each dataset
+  var testVideos = VideoPairs.find({type:"test", approved: true}).fetch();
+  var videoGroups = _.groupBy(testVideos, "datasetId");
+  _.each(_.keys(videoGroups), function(datasetId){
+    var videosByDataset = videoGroups[datasetId];
+
+    var selectedFromDataset = _.chain(videosByDataset).sample(2).value();
+    _.each(selectedFromDataset, function(pair) {selectedVideos.push(pair)});
   });
   return _.chain(selectedVideos).shuffle().value();
 };
@@ -52,12 +54,10 @@ function getNextVideoPair() {
   return pair;  
 };
 
-function getVideoURL(wptId) {
-  var videoData = VideoData.findOne({wptId: wptId});
-  //console.log(wptId, videoData);
-  var fs = VideoUploads.findOne({_id: videoData.fileId});
-  //console.log(fs);
-  return fs.url();
+function getVideoURL(wptId, dataset) {
+  let key = 'akiaiitjf6kchjnifoaa';
+  let url = `https://s3.amazonaws.com/${key}_${dataset}/${wptId}.gif`;
+  return url;
 };
 
 function saveResult(comp) {
@@ -161,9 +161,10 @@ Template.abTest.events({
       conclude();
       return;
     }
+    var dataset = DataSets.findOne({_id: currentPair.datasetId}).name;
     preloadGifs(
-      getVideoURL(currentPair.wptId_1),
-      getVideoURL(currentPair.wptId_2)
+      getVideoURL(currentPair.wptId_1, dataset),
+      getVideoURL(currentPair.wptId_2, dataset)
       );
   },
 
@@ -239,9 +240,11 @@ Template.guide_modal.events({
       // currentPair = getRandomVideoPair();
       curIndex = 0;
       currentPair = getNextVideoPair();
+      console.log(currentPair);
+      var dataset = DataSets.findOne({_id: currentPair.datasetId}).name;
       preloadGifs(
-        getVideoURL(currentPair.wptId_1),
-        getVideoURL(currentPair.wptId_2));
+        getVideoURL(currentPair.wptId_1, dataset),
+        getVideoURL(currentPair.wptId_2, dataset));
     }, 5000);
   }
 });
@@ -250,7 +253,7 @@ Template.thanks_modal.helpers({
   success_percent: function() {
     _scoreDeps.depend();
     //console.log(_.size(passedTrainingData), totalTrainingData);
-    return (_.size(passedTrainingData)*100)/totalTrainingData;
+    return Math.ceil((_.size(passedTrainingData)*100)/totalTrainingData);
   }
 });
 
@@ -281,7 +284,7 @@ Template.score_modal.helpers({
   success_percent: function() {
     _scoreDeps.depend();
     //console.log(_.size(passedTrainingData), totalTrainingData);
-    return (_.size(passedTrainingData)*100)/totalTrainingData;
+    return Math.ceil((_.size(passedTrainingData)*100)/totalTrainingData);
   }
 });
 

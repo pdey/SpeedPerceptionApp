@@ -9,6 +9,70 @@ Meteor.loginAsAdmin = function(password, callback) {
   });
 };
 
+// View filters
+var curViewDatasetId = null;
+var _curDatasetDeps = new Deps.Dependency;
+
+//==== Video Previews
+var curPairId = null;
+
+function displayVideos() {
+  var pair = VideoPairs.findOne({_id: curPairId});
+  var dataset = DataSets.findOne({_id: pair.datasetId}).name;
+  console.log(pair);
+  preloadGifs(getVideoURL(pair.wptId_1, dataset), getVideoURL(pair.wptId_2, dataset));
+}
+
+function getVideoURL(wptId, dataset) {
+  let key = 'akiaiitjf6kchjnifoaa';
+  let url = `https://s3.amazonaws.com/${key}_${dataset}/${wptId}.gif`;
+  return url;
+}
+
+function preloadGifs(url1, url2) {
+  // Remove existing gif images.
+  $('#loaderIcon').show();
+  
+  if($('#gifVideo1')) {
+    $('#gifVideo1').attr('src', '');
+  }
+  if($('#gifVideo2')) {
+    $('#gifVideo2').attr('src', '');
+  }
+
+  $('.first-gif').empty();
+  $('.second-gif').empty();
+  
+  var firstGif = new Image();
+  var secondGif = new Image();
+
+  firstGif.src = url1;
+  secondGif.src = url2;
+
+  var numLoaded = 0;
+
+  firstGif.onload = function() {syncGifLoad(firstGif);};
+  secondGif.onload = function() {syncGifLoad(secondGif);};
+
+  function syncGifLoad(video) {
+    numLoaded++;
+    
+    if(numLoaded == 2) {
+      console.log("Both loaded");
+      $('#loaderIcon').hide();    
+      $(firstGif).attr('id', 'gifVideo1').addClass('img-responsive');
+      $(secondGif).attr('id', 'gifVideo2').addClass('img-responsive');
+      $('.first-gif').append($(firstGif));
+      $('.second-gif').append($(secondGif));
+
+      // start timer
+      videoStartTime = new Date().getTime();
+
+      numLoaded = 0;
+    }
+  };
+};
+
 /* Template : adminAuth */
 Template.adminAuth.events({
   'submit .admin-access': function(e, t) {
@@ -68,8 +132,10 @@ Template.datasetUploader.events({
     reader.addEventListener('load', function(event){
       var csv = event.target.result;
       var  objArr = csv2ObjArray(csv);
+      // filter object to remove all sensitive data.
+      var securedObjArr = _.map(objArr, function(o) {return _.pick(o, 'domain', 'wpt_test_id')})
       // console.log(objArr);
-      Meteor.call('datasets.insert', datasetName, objArr);
+      Meteor.call('datasets.insert', datasetName, securedObjArr);
     });
 
     reader.readAsText(file);
@@ -256,11 +322,11 @@ Template.videoPairUpload.helpers({
   },
 
   videoPairs: function() {
-    return VideoPairs.find({}, {sort: {dataset: 1}});
-  },
-
-  countPairs: function() {
-    return VideoPairs.find().count();
+    _curDatasetDeps.depend();
+    if(! curViewDatasetId) {
+      curViewDatasetId = DataSets.findOne()._id;
+    }
+    return VideoPairs.find({datasetId: curViewDatasetId}, {sort: {type: -1, criteria: 1, approved: -1}});
   }
 });
 
@@ -313,21 +379,17 @@ Template.videoPairUpload.events({
       var has_id_1 = _.findWhere(data, {wpt_test_id: wptId_1});
       var has_id_2 = _.findWhere(data, {wpt_test_id: wptId_2});
       if(has_id_1 && has_id_2) {
-        // Check if videos are uploaded.
-        if(! VideoData.findOne({wptId: wptId_1})) {
-          console.error("No vidoes found for test id: " + wptId_1);
-          return false;
-        }
-        if(! VideoData.findOne({wptId: wptId_2})) {
-          console.error("No vidoes found for test id: " + wptId_2);
-          return false;  
-        }
+        return true;
       } else {
         console.error("Invalid test ids");
         return false;
       }
-      return true;
     }
+  },
+
+  'change .view-dataset-filter': function(e, t) {
+    curViewDatasetId = $(e.target).val();
+    _curDatasetDeps.changed();
   }
 });
 
@@ -338,11 +400,36 @@ Template.singleVideoPairDisplay.helpers({
 });
 
 Template.singleVideoPairDisplay.events({
-  'submit #removeVideoPair': function(e, t) {
+
+  'click .review-videos': function(e, t) {
+    e.preventDefault();
+    console.log(this._id);
+    curPairId = this._id;
+    // var pair = VideoPairs.findOne({_id: this._id});
+    $('#showVideos').modal('show');
+  },
+
+  'submit #toggleVideoPair': function(e, t) {
     e.preventDefault();
     var dbId = e.target.pairid.value;
+    console.log("Toggle pair: " + dbId);
     // Remove from db
-    Meteor.call('videoPairs.remove', dbId);
+    Meteor.call('videoPairs.toggle', dbId);
     return true;
+  }
+});
+
+/* Template: previewVideosModal */
+Template.previewVideosModal.events({
+  'click .replay-btn': function(e, t) {
+    e.preventDefault();
+    var first = $('#gifVideo1').attr('src');
+    var second = $('#gifVideo2').attr('src');
+    preloadGifs(first, second);
+  },
+
+  'shown.bs.modal #showVideos': function(e, t) {
+    console.log('showing videos');
+    displayVideos();
   }
 });

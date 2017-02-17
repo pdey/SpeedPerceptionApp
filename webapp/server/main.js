@@ -87,12 +87,14 @@ Meteor.methods({
     VideoPairs.insert(obj);
   },
 
-  'videoPairs.remove'(id) {
+  'videoPairs.toggle'(id) {
     if(! this.userId) {
       throw new Meteor.Error('not-authorized');
     }
-    console.log('Removing test/train pair');
-    VideoPairs.remove(id);
+    console.log('Changing approval of test/train pair:' + id);
+    var pair = VideoPairs.findOne({_id: id});
+    console.log(pair);
+    VideoPairs.update({_id: id}, {$set:{approved: !(pair.approved)}});
   },
 
   'testResults.insert'(obj) {

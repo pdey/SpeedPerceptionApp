@@ -2,6 +2,7 @@
   <h1> Admin Panel </h1>
   {{#if currentUser}}
   {{> adminConsole}}
+  {{> previewVideosModal}}
   {{else}}
   {{> adminAuth}}
   {{/if}}
@@ -83,26 +84,6 @@
 <!-- List of domains for video upload -->
 <template name="singleDomain">
   <li><h4 class="force-inline">{{domain}} | {{wpt_test_id}}</h4>
-    {{#if hasVideo ..}}
-    <span class="glyphicon glyphicon-ok" aria-hidden="true"></span>
-    <form id='removeVideo' class='form-inline force-inline' method="POST">
-      <input name='wpt_test_id' value='{{wpt_test_id}}' type='hidden'/>
-      <input name='dataset_name' value='{{../name}}' type='hidden'/>
-      <button type='submit' class='btn btn-danger'>
-        <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
-      </button>
-    </form>
-    {{else}}
-    <form id='uploadVideo' class='form-inline force-inline' method="POST">
-      <input id='mp4input' class='force-inline' name='mp4input' type='file'/>
-      <input name='wpt_test_id' value='{{wpt_test_id}}' type='hidden'/>
-      <input name='dataset_name' value='{{../name}}' type='hidden'/>
-      <button type='submit' class='btn btn-primary'>
-        <span class="glyphicon glyphicon-upload" aria-hidden="true"></span>
-        Upload video
-      </button> 
-    </form>
-    {{/if}}
   </li>
 </template>
 
@@ -165,7 +146,16 @@
         </form>
       </div>
       <div class="col-lg-6">
-        <h2>Uploaded Videos (Total: {{countPairs}})</h2>
+        <h2>Uploaded Pairs</h2>
+        <div class="form-group">
+          <label> Dataset: 
+            <select class="form-control view-dataset-filter" name="dataset">
+              {{#each datasets}}
+              <option value="{{_id}}">{{name}}</option> 
+              {{/each}}
+            </select>
+          </label>
+        </div>
         <ul>
           {{#each videoPairs}}
           <li>{{> singleVideoPairDisplay}}</li>
@@ -177,18 +167,22 @@
 </template>
 
 <template name="singleVideoPairDisplay">
-  <span>{{datasetName datasetId}}, {{wptId_1}}, {{wptId_2}}, {{type}},
+  <a href="#" class="review-videos"><span>{{datasetName datasetId}}, {{wptId_1}}, {{wptId_2}}, {{type}},
     {{#if result}}
     {{result}}
     {{else}} 
     {{criteria}}
     {{/if}}
-  </span>
-  <form id='removeVideoPair' class='form-inline force-inline'>
+  </span></a>
+  <form id='toggleVideoPair' class='form-inline force-inline'>
     <input type='hidden' name='pairid' value='{{_id}}'/>
-    <button type='submit' class='btn btn-danger'>
-      <span class='glyphicon glyphicon-remove' aria-hidden='true'></span>
-    </button>
+      <button type='submit' class='btn btn-secondary'>
+      {{#if approved}}
+        <span class='glyphicon glyphicon-minus glyphicon-ok' aria-hidden='true'></span>
+      {{else}}
+        <span class='glyphicon glyphicon-plus' aria-hidden='true'></span>
+      {{/if}}
+      </button>
   </form>
 </template>
 
@@ -216,4 +210,26 @@
       Delete
     </button>
   </form>
+</template>
+
+<template name ="previewVideosModal">
+  <div class="modal" id="showVideos" role="dialog" tabindex="-1">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2 class="modal-title">Gif Videos</h2>
+      </div>
+      <div class="modal-body text-centered">
+        <form class='form' id='visualFeedback'> 
+          {{> gifView}}
+          <div class="container text-center">
+            <button class='btn btn-lg btn-secondary replay-btn'><span class="glyphicon glyphicon-repeat"></span> Replay</button>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default btn-secondary" data-dismiss="modal">Close
+        </button>
+      </div>
+    </div>
+  </div>
 </template>
