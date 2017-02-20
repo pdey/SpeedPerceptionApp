@@ -18,14 +18,12 @@ var curPairId = null;
 
 function displayVideos() {
   var pair = VideoPairs.findOne({_id: curPairId});
-  var dataset = DataSets.findOne({_id: pair.datasetId}).name;
   console.log(pair);
-  preloadGifs(getVideoURL(pair.wptId_1, dataset), getVideoURL(pair.wptId_2, dataset));
+  preloadGifs(getVideoURL(pair.wptId_1), getVideoURL(pair.wptId_2));
 }
 
-function getVideoURL(wptId, dataset) {
-  let key = 'akiaiitjf6kchjnifoaa';
-  let url = `https://s3.amazonaws.com/${key}_${dataset}/${wptId}.gif`;
+function getVideoURL(wptId) {
+  let url = `http://doabimqbqjo7b.cloudfront.net/${wptId}.gif`;
   return url;
 }
 

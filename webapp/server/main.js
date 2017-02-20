@@ -117,6 +117,10 @@ Meteor.methods({
     TestResults.insert(obj);
   },
 
+  'visualResponse.insert'(obj) {
+    VisualResponse.insert(obj);
+  },
+
   'feedbacks.insert'(feedback, session) {
     check(feedback, String);
     check(session, String);

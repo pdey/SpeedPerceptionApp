@@ -11,6 +11,8 @@ var totalTrainingData = 0;
 var videoStartTime = 0;
 var replayCount = 0;
 
+var visualResponseStartTime = 0;
+
 // randomly select 8 test videos from each condition and 3 training videos for a  user.
 function selectVideosForUser() {
   var trainingVideos = VideoPairs.find({type: "train", approved: true}).fetch();
@@ -54,9 +56,8 @@ function getNextVideoPair() {
   return pair;  
 };
 
-function getVideoURL(wptId, dataset) {
-  let key = 'akiaiitjf6kchjnifoaa';
-  let url = `https://s3.amazonaws.com/${key}_${dataset}/${wptId}.gif`;
+function getVideoURL(wptId) {
+  let url = `http://doabimqbqjo7b.cloudfront.net/${wptId}.gif`;
   return url;
 };
 
@@ -81,6 +82,22 @@ function saveResult(comp) {
     _scoreDeps.changed();
     // showProgress();
   }
+
+  // Show the visual response check modal after the 4th and 8th pair.
+  if (curIndex == 4 || curIndex == 8) {
+    $('#visual-response-modal').modal('show'); 
+  }
+}
+
+function saveVisualResponse() {
+  var curTime = new Date().getTime();
+  var latency = curTime - visualResponseStartTime;
+
+  Meteor.call('visualResponse.insert',
+    {
+      session: Session.get('userSessionKey'),
+      latencyInMS: latency
+    });
 }
 
 function preloadGifs(url1, url2) {
@@ -161,10 +178,9 @@ Template.abTest.events({
       conclude();
       return;
     }
-    var dataset = DataSets.findOne({_id: currentPair.datasetId}).name;
     preloadGifs(
-      getVideoURL(currentPair.wptId_1, dataset),
-      getVideoURL(currentPair.wptId_2, dataset)
+      getVideoURL(currentPair.wptId_1),
+      getVideoURL(currentPair.wptId_2)
       );
   },
 
@@ -213,8 +229,36 @@ Template.abTest.events({
 });
 
 Template.abTest.onRendered(function(){
+  $('#visual-response-modal').on('shown.bs.modal', function() {
+    console.log('Visual response modal shown');
+    Meteor.setTimeout(function() {
+      console.log('changing circle color');
+      $('.visual-response').prop('disabled', false);
+      $('.circle').css('background', 'blue');
+      visualResponseStartTime = new Date().getTime();
+    }, 4000);
+  });
+
+  $('#visual-response-modal').on('hidden.bs.modal', function() {
+    console.log('Visual response modal hidden');
+    $('.visual-response').prop('disabled', true);
+    $('.circle').css('background', 'black');
+    if(curIndex == 0) {
+      // First time visual response check.
+      Meteor.setTimeout(function(){
+        currentPair = getNextVideoPair();
+        preloadGifs(
+          getVideoURL(currentPair.wptId_1),
+          getVideoURL(currentPair.wptId_2));
+      }, 1000);
+    }
+  });
+
   $('#guideModal').modal('show');
   $('.show-next').prop('disabled', true);
+  $('.visual-response').prop('disabled', true);
+
+  curIndex = 0;
   // Generate a random hash for this user and store in session
   Session.set('userSessionKey', Random.id());
 
@@ -235,18 +279,14 @@ Template.guide_modal.events({
     e.preventDefault();
     console.log('start playing videos');
     t.$('#guideModal').modal('hide');
-
-    Meteor.setTimeout(function(){
-      // currentPair = getRandomVideoPair();
-      curIndex = 0;
-      currentPair = getNextVideoPair();
-      console.log(currentPair);
-      var dataset = DataSets.findOne({_id: currentPair.datasetId}).name;
-      preloadGifs(
-        getVideoURL(currentPair.wptId_1, dataset),
-        getVideoURL(currentPair.wptId_2, dataset));
-    }, 5000);
   }
+});
+
+Template.guide_modal.onRendered(function() {
+  $('#guideModal').on('hidden.bs.modal', function() {
+    // First visual response check.
+    $('#visual-response-modal').modal('show');
+  });
 });
 
 Template.thanks_modal.helpers({
@@ -311,5 +351,15 @@ Template.progressbar.helpers({
 Template.instructions.helpers({
   isPhoneOrTablet: function() {
     return isVerticalDisplayDevice();
+  }
+});
+
+// Visual Response Modal
+Template.visual_response_modal.events({
+  'click .visual-response': function(e, t) {
+    e.preventDefault();
+    // Register the timing.
+    saveVisualResponse();
+    t.$('#visual-response-modal').modal('hide');
   }
 });

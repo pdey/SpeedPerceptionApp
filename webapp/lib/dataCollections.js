@@ -49,6 +49,9 @@ VideoPairs = new Meteor.Collection('videoPairs');
 // Results of experiment.
 TestResults = new Meteor.Collection('testResults');
 
+// Visual response timer
+VisualResponse = new Meteor.Collection('visualResponse');
+
 // User feedback.
 UserFeedbacks = new Meteor.Collection('userFeedbacks');
 

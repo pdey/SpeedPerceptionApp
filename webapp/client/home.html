@@ -4,7 +4,7 @@
   {{> progressbar}}
   {{> abTest}}
   {{> guide_modal}}
-<!--  {{> score_modal}} -->
+  {{> visual_response_modal}}
   {{> thanks_modal}}
 </template>
 
@@ -151,4 +151,21 @@
       {{progress}}% Complete
     </div>
   </div>  
+</template>
+
+<template name="visual_response_modal">
+  <div class="modal" id="visual-response-modal" role="dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2 class="modal-title">Please press the green button as soon as the circle changes color</h2>
+      </div>
+      <div class="modal-body">
+        <div class="circle"></div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-large btn-success visual-response">Done!
+        </button>
+      </div>
+    </div>
+  </div>
 </template>

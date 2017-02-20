@@ -150,3 +150,10 @@ img {
 35% {
   -webkit-transform: scale3D(0, 0, 1);
           transform: scale3D(0, 0, 1); } }
+
+.circle {
+  width:100px;
+  height:100px;
+  border-radius:50px;
+  background:#000
+}
