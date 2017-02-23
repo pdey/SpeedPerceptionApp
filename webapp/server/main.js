@@ -118,6 +118,7 @@ Meteor.methods({
   },
 
   'visualResponse.insert'(obj) {
+    _.extend(obj, {timestamp: new Date()});
     VisualResponse.insert(obj);
   },
 
@@ -131,7 +132,8 @@ Meteor.methods({
     UserFeedbacks.insert(
       {
         session: session,
-        feedback: feedback
+        feedback: feedback,
+        timestamp: new Date()
       }
     );
   },
@@ -144,7 +146,8 @@ Meteor.methods({
     ExpertComments.insert(
     {
       pairId: pairId,
-      comment: comment
+      comment: comment,
+      timestamp: new Date()
     });
   },
 
