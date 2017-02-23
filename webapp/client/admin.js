@@ -401,6 +401,7 @@ Template.singleVideoPairDisplay.events({
 
   'click .review-videos': function(e, t) {
     e.preventDefault();
+    t.$('a').addClass('text-warning');
     console.log(this._id);
     curPairId = this._id;
     // var pair = VideoPairs.findOne({_id: this._id});
