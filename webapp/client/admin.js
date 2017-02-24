@@ -372,16 +372,17 @@ Template.videoPairUpload.events({
 
     // form validation
     function validate() {
-      var ds = DataSets.findOne({_id: datasetId});
-      var data = ds.data;
-      var has_id_1 = _.findWhere(data, {wpt_test_id: wptId_1});
-      var has_id_2 = _.findWhere(data, {wpt_test_id: wptId_2});
-      if(has_id_1 && has_id_2) {
-        return true;
-      } else {
-        console.error("Invalid test ids");
-        return false;
-      }
+      return true;
+      // var ds = DataSets.findOne({_id: datasetId});
+      // var data = ds.data;
+      // var has_id_1 = _.findWhere(data, {wpt_test_id: wptId_1});
+      // var has_id_2 = _.findWhere(data, {wpt_test_id: wptId_2});
+      // if(has_id_1 && has_id_2) {
+      //   return true;
+      // } else {
+      //   console.error("Invalid test ids");
+      //   return false;
+      // }
     }
   },
 
