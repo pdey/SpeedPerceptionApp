@@ -19,8 +19,8 @@
         <!-- Second video will load here -->
       </div>
       <div id="loaderIcon">
+        <span>Websites recorded on a Mobile device may take longer time to load, Thanks for being patient!</span><br/>
         <i class="fa fa-spinner fa-pulse fa-3x fa-fw"></i>
-        <span class="sr-only">Loading...</span>
       </div>
     </div>
   </div>
@@ -72,11 +72,17 @@
 <template name="instructions">
   <ol>
     <li>
-      <h4>Watch the pair of videos that shows how two websites load. Wait until both videos turn grey.</h4>
+      <h4>Watch the pair of videos that shows how two websites load. A video turns grey when it ends.</h4>
     </li>
 
     <li>
       <h4>Based on videos, determine which website seems to load faster.</h4>
+    </li>
+
+    <li>
+      <h4>
+        Additionally, You will  be asked to accomplish some simple tasks that will help us measure the response timings with better accuracy.
+      </h4>
     </li>
 
     <li>
@@ -90,7 +96,7 @@
           <h5>Click on <button class='btn btn-default btn-success disabled'><span>About the Same</span></button> if both websites take about the same time to load.</h5>
         </li>
         <li>
-          <h5>Click on <button class='btn btn-default btn-success disabled'><span>{{#if isPhoneOrTablet}}Down{{else}}Right{{/if}}</span></button> if website {{#if isPhoneOrTablet}} at the bottm {{else}} on the right {{/if}} appears to load faster.</h5>
+          <h5>Click on <button class='btn btn-default btn-success disabled'><span>{{#if isPhoneOrTablet}}Down{{else}}Right{{/if}}</span></button> if website {{#if isPhoneOrTablet}} at the bottom {{else}} on the right {{/if}} appears to load faster.</h5>
         </li>
       </ul>
     </li>

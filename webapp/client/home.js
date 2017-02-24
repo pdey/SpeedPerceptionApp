@@ -231,12 +231,17 @@ Template.abTest.events({
 Template.abTest.onRendered(function(){
   $('#visual-response-modal').on('shown.bs.modal', function() {
     console.log('Visual response modal shown');
+    let delay = 4000;
+    if (curIndex == 0) {
+      delay = 8000;
+    }
+
     Meteor.setTimeout(function() {
       console.log('changing circle color');
       $('.visual-response').prop('disabled', false);
       $('.circle').css('background', 'blue');
       visualResponseStartTime = new Date().getTime();
-    }, 4000);
+    }, delay);
   });
 
   $('#visual-response-modal').on('hidden.bs.modal', function() {
