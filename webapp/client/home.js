@@ -232,10 +232,7 @@ Template.abTest.onRendered(function(){
   $('#visual-response-modal').on('shown.bs.modal', function() {
     console.log('Visual response modal shown');
     let delay = 4000;
-    if (curIndex == 0) {
-      delay = 8000;
-    }
-
+    
     Meteor.setTimeout(function() {
       console.log('changing circle color');
       $('.visual-response').prop('disabled', false);
@@ -366,5 +363,18 @@ Template.visual_response_modal.events({
     // Register the timing.
     saveVisualResponse();
     t.$('#visual-response-modal').modal('hide');
+  },
+
+  'click .replay-visual': function(e, t) {
+    t.$('.visual-response').prop('disabled', true);
+    t.$('.circle').css('background', 'black');
+    let delay = 4000;
+    
+    Meteor.setTimeout(function() {
+      console.log('changing circle color');
+      $('.visual-response').prop('disabled', false);
+      $('.circle').css('background', 'blue');
+      visualResponseStartTime = new Date().getTime();
+    }, delay);  
   }
 });
