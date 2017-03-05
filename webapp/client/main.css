@@ -151,7 +151,7 @@ img {
   -webkit-transform: scale3D(0, 0, 1);
           transform: scale3D(0, 0, 1); } }
 
-.circle {
+.visual-response-circle {
   width:100px;
   height:100px;
   border-radius:50px;

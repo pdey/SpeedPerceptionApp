@@ -236,7 +236,7 @@ Template.abTest.onRendered(function(){
     Meteor.setTimeout(function() {
       console.log('changing circle color');
       $('.visual-response').prop('disabled', false);
-      $('.circle').css('background', 'blue');
+      $('.visual-response-circle').css('background', 'blue');
       visualResponseStartTime = new Date().getTime();
     }, delay);
   });
@@ -244,7 +244,7 @@ Template.abTest.onRendered(function(){
   $('#visual-response-modal').on('hidden.bs.modal', function() {
     console.log('Visual response modal hidden');
     $('.visual-response').prop('disabled', true);
-    $('.circle').css('background', 'black');
+    $('.visual-response-circle').css('background', 'black');
     if(curIndex == 0) {
       // First time visual response check.
       Meteor.setTimeout(function(){
@@ -367,13 +367,13 @@ Template.visual_response_modal.events({
 
   'click .replay-visual': function(e, t) {
     t.$('.visual-response').prop('disabled', true);
-    t.$('.circle').css('background', 'black');
+    t.$('.visual-response-circle').css('background', 'black');
     let delay = 4000;
     
     Meteor.setTimeout(function() {
       console.log('changing circle color');
       $('.visual-response').prop('disabled', false);
-      $('.circle').css('background', 'blue');
+      $('.visual-response-circle').css('background', 'blue');
       visualResponseStartTime = new Date().getTime();
     }, delay);  
   }
