@@ -23,7 +23,7 @@ function displayVideos() {
 }
 
 function getVideoURL(wptId) {
-  let url = `http://doabimqbqjo7b.cloudfront.net/${wptId}.gif`;
+  let url = `http://speedperception.instartlogic.com/${wptId}.gif`;
   return url;
 }
 
