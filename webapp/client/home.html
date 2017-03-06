@@ -3,6 +3,7 @@
   <h3> Which of the 2 websites do you perceive to be faster? </h3>
   {{> progressbar}}
   {{> abTest}}
+  {{> user_info_modal}}
   {{> guide_modal}}
   {{> visual_response_modal}}
   {{> thanks_modal}}
@@ -175,6 +176,59 @@
         </button>
         <button type="button" class="btn btn-default btn-secondary replay-visual">Replay
         </button>
+      </div>
+    </div>
+  </div>
+</template>
+
+<template name="user_info_modal">
+  <div class="modal" id="user-info-modal" role="dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2 class="modal-title">Please fill in some basic information about you!</h2>
+      </div>
+      <div class="modal-body text-center">
+        <div class="form-group">
+          <label> Gender:
+            <select class="form-control" id="gender" name="gender">
+              <option value="f">Woman</option>
+              <option value="m">Man</option>
+              <option value="other">Other than Man/Woman</option>
+              <option value="non-disclosed">Prefer Not to Disclose</option>
+            </select>
+          </label>
+        </div>
+        <div class="form-group">
+          <label> Age:
+            <select class="form-control" id="age" name="age">
+              <option value="0-18">0-18</option>
+              <option value="18-35">18-25</option>
+              <option value="25-35">25-35</option>
+              <option value="35-50">35-50</option>
+              <option value="50-65">50-65</option>
+              <option value="above-65">Above 65</option>
+              <option value="non-disclosed">Prefer Not to Disclose</option>
+            </select>
+          </label>
+        </div>
+        <div class="form-group">
+          <label> Occupation:
+            <select class="form-control" id="occupation" name="occupation">
+              <option value="student">Student</option>
+              <option value="academics">Academics</option>
+              <option value="engineer">Engineer</option>
+              <option value="sales-and-marketing">Sales And Marketing</option>
+              <option value="finance">Finance</option>
+              <option value="other">Other</option>
+              <option value="non-disclosed">Prefer Not to Disclose</option>
+            </select> 
+          </label>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default btn-primary continue-play"><span class="glyphicon glyphicon-arrow-right"></span>Continue
+        </button>
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Skip</button>
       </div>
     </div>
   </div>

@@ -117,6 +117,21 @@ Meteor.methods({
     TestResults.insert(obj);
   },
 
+  'userInfo.insert'(gender, age, occupation, session) {
+    check(gender, String);
+    check(age, String);
+    check(occupation, String);
+    check(session, String);
+    UserInfo.insert(
+      {
+        session: session,
+        gender: gender,
+        age: age,
+        occupation: occupation
+      }
+    );
+  },
+
   'visualResponse.insert'(obj) {
     _.extend(obj, {timestamp: new Date()});
     VisualResponse.insert(obj);

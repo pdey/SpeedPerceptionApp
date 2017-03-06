@@ -232,6 +232,11 @@ Template.abTest.events({
 });
 
 Template.abTest.onRendered(function(){
+
+  $('#user-info-modal').on('hidden.bs.modal', function() {
+    $('#guideModal').modal('show');
+  });
+
   $('#visual-response-modal').on('shown.bs.modal', function() {
     console.log('Visual response modal shown');
     let delay = 4000;
@@ -259,7 +264,8 @@ Template.abTest.onRendered(function(){
     }
   });
 
-  $('#guideModal').modal('show');
+  $('#user-info-modal').modal('show');
+  // $('#guideModal').modal('show');
   $('.show-next').prop('disabled', true);
   $('.visual-response').prop('disabled', true);
 
@@ -294,6 +300,20 @@ Template.guide_modal.onRendered(function() {
   });
 });
 
+Template.user_info_modal.events({
+  'click .continue-play': function(e, t) {
+    e.preventDefault();
+    console.log("Collecting user info!");
+    let gender = t.$('#gender').val();
+    let age = t.$('#age').val();
+    let occupation = t.$('#occupation').val();
+    console.log(Session.get('userSessionKey'), gender, age, occupation);
+    Meteor.call('userInfo.insert', gender, age, occupation, Session.get('userSessionKey'));
+
+    t.$('#user-info-modal').modal('hide');
+  }
+});
+
 Template.thanks_modal.helpers({
   success_percent: function() {
     _scoreDeps.depend();
@@ -319,6 +339,8 @@ Template.thanks_modal.events({
     e.preventDefault();
     // feedback
     var feedback = t.$('#feedback-text').val();
+    t.$('#feedback-text').prop('disabled', true);
+    t.$('.send-feedback').prop('disabled', true);
     if(feedback && feedback.length > 3) {
       Meteor.call('feedbacks.insert', feedback, Session.get('userSessionKey'));      
     }
