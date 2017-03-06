@@ -12,6 +12,7 @@ var videoStartTime = 0;
 var replayCount = 0;
 
 var visualResponseStartTime = 0;
+var playAgain = false;
 
 // randomly select 8 test videos from each condition and 3 training videos for a  user.
 function selectVideosForUser() {
@@ -30,7 +31,9 @@ function selectVideosForUser() {
     var selectedFromDataset = _.chain(videosByDataset).sample(2).value();
     _.each(selectedFromDataset, function(pair) {selectedVideos.push(pair)});
   });
-  return _.chain(selectedVideos).shuffle().value();
+  var selectedVideos = _.chain(selectedVideos).shuffle().value();
+  // return _.first(selectedVideos, 1);
+  return selectedVideos;
 };
 
 function getNextVideoPair() {
@@ -302,6 +305,13 @@ Template.thanks_modal.helpers({
 Template.thanks_modal.events({
   'click .stop-play': function(e, t) {
     e.preventDefault();
+    playAgain = false;
+    t.$('#thanksModal').modal('hide');
+  },
+
+  'click .play-again': function(e, t) {
+    e.preventDefault();
+    playAgain = true;
     t.$('#thanksModal').modal('hide');
   },
 
@@ -312,13 +322,17 @@ Template.thanks_modal.events({
     if(feedback && feedback.length > 3) {
       Meteor.call('feedbacks.insert', feedback, Session.get('userSessionKey'));      
     }
-    t.$('#thanksModal').modal('hide');
+    // t.$('#thanksModal').modal('hide');
   }
 });
 
 Template.thanks_modal.onRendered(function() {
   $('#thanksModal').on('hidden.bs.modal', function() {
-    Router.go('/');
+    if (playAgain) {
+      document.location.reload(true);
+    } else {
+      Router.go('/');
+    }
   });
 });
 
