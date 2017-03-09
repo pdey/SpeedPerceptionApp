@@ -21,6 +21,7 @@ function selectVideosForUser() {
   var selectedVideos = _.chain(trainingVideos).sample(3).value();
   totalTrainingData = _.size(selectedVideos);
   console.log(`total training data: ${totalTrainingData}`);
+  // return _.first(selectedVideos, 1);
 
   // sample 2 test pairs from each dataset
   var testVideos = VideoPairs.find({type:"test", approved: true}).fetch();
@@ -31,9 +32,8 @@ function selectVideosForUser() {
     var selectedFromDataset = _.chain(videosByDataset).sample(2).value();
     _.each(selectedFromDataset, function(pair) {selectedVideos.push(pair)});
   });
-  var selectedVideos = _.chain(selectedVideos).shuffle().value();
-  // return _.first(selectedVideos, 1);
-  return selectedVideos;
+  var finalizedVideos = _.chain(selectedVideos).shuffle().value();
+  return finalizedVideos;
 };
 
 function getNextVideoPair() {
@@ -88,6 +88,7 @@ function saveResult(comp) {
 
   // Show the visual response check modal after the 4th and 8th pair.
   if (curIndex == 4 || curIndex == 8) {
+    $('.visual-response-circle').css('background', 'black');
     $('#visual-response-modal').modal('show'); 
   }
 }
@@ -134,8 +135,16 @@ function preloadGifs(url1, url2) {
     if(numLoaded == 2) {
       console.log("Both loaded");
       $('#loaderIcon').hide();    
-      $(firstGif).attr('id', 'gifVideo1').addClass('img-responsive');
-      $(secondGif).attr('id', 'gifVideo2').addClass('img-responsive');
+     
+      // Check for mobile device.
+      if (Meteor.Device.isPhone()) {
+        $(firstGif).attr('id', 'gifVideo1').addClass('height-responsive');
+        $(secondGif).attr('id', 'gifVideo2').addClass('height-responsive');
+      } else {
+        $(firstGif).attr('id', 'gifVideo1').addClass('img-responsive');
+        $(secondGif).attr('id', 'gifVideo2').addClass('img-responsive');
+      }
+
       $('.first-gif').append($(firstGif));
       $('.second-gif').append($(secondGif));
 
@@ -162,6 +171,18 @@ function isVerticalDisplayDevice() {
 Template.abTest.helpers({
   isPhoneOrTablet: function() {
     return isVerticalDisplayDevice();
+  }
+});
+
+Template.gifView.helpers({
+  gifWidth: function() {
+    if (Meteor.Device.isTablet()) {
+      return "col-sm-6";
+    } else if(Meteor.Device.isPhone()) {
+      return "col-xs-100";
+    } else {
+      return "col-md-6";
+    }
   }
 });
 
@@ -296,6 +317,7 @@ Template.guide_modal.events({
 Template.guide_modal.onRendered(function() {
   $('#guideModal').on('hidden.bs.modal', function() {
     // First visual response check.
+    $('.visual-response-circle').css('background', 'black');
     $('#visual-response-modal').modal('show');
   });
 });

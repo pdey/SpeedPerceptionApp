@@ -157,3 +157,13 @@ img {
   border-radius:50px;
   background:#000;
 }
+
+.height-responsive {
+    width: 100%;
+    display:block;
+    height: 48vh;
+}
+
+#speedComparison {
+  height: 100vh;
+}
