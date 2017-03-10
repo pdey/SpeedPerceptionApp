@@ -6,22 +6,27 @@
     
   <p>SpeedPerception is a large-scale web performance crowdsourced study focused on the perceived loading performance of <a href="https://en.wikipedia.org/wiki/Above_the_fold" target="#">above-the-fold</a> content. Traditional web performance metrics defined in  <a href="https://www.w3.org/TR/navigation-timing/" target="#">W3C</a> standards focus on timing each process along the content delivery pipeline, such as Time to First Byte (TTFB) and Page Load Time. We want to tackle the web performance measurement challenge by looking at it from a different angle: one which puts user experience into focus. Since people primarily consume the web visually, we are focusing on the visual perception of the webpage loading process.</p>
 
-  <p>In the current version, SpeedPerception provides sample video pairs generated from <a href="http://www.webpagetest.org/" target="#">http://www.webpagetest.org/</a> (WPT) using Internet Retailer top-500 (IR500) website home pages. A total of 21 pairs are displayed during each session, and participants are requested to complete at least one session (21 pairs) of survey. Some of these pairs are randomly drawn from pairs where the correct choice is known a-priori. The challenge is to get 100% score on the known pairs during each session.</p>
-
+  <p>
+    In the current version (Phase-2), SpeedPerception provides sample video pairs generated from <a href="http://www.webpagetest.org/" target="#">http://www.webpagetest.org/</a> (WPT) using mobile and desktop versions of Internet Retailer top-500 (IR500) as well as Alexa top-1000 website home pages. A total of 11 pairs are displayed during each session, and participants are requested to complete at least one session (11 pairs) of survey. Some of these pairs are randomly drawn from pairs where the correct choice is known a-priori. The challenge is to get 100% score on the known pairs during each session.
+  </p>
+  
   <h2>What is the goal of SpeedPerception?</h2>
   <p>Our goal is to create a free, open-source, benchmark dataset to advance the systematic study of how human end-users perceive the webpage loading process: the above-the-fold rendering in particular. Our belief (and hope) is that such a benchmark can provide a quantitative basis to compare different algorithms and spur computer scientists to make progress on helping quantify perceived webpage performance.</p>
 
   <p><strong>Click on the <a href="/challenge">Challenge</a> link to play!</strong></p>
 
   <h2>How was SpeedPerception created?</h2>
-  <p>We use Patrick Meenan’s open-source <a href="https://github.com/WPO-Foundation/webpagetest" targer="#">WebPagetest</a> (a.k.a WPT) to test 300+ home pages from the IR500 list in June 2016. Videos were generated and downloaded from WPT, processed into gif format, then incorporated into SpeedPerception . The video pairs presented were selected under a set of rules to better help us limit bias and randomness (<a href="https://github.com/pdey/SpeedPerception" target="#">the rules are available on GitHub</a>).</p>
+  <p>We use Patrick Meenan’s open-source <a href="https://github.com/WPO-Foundation/webpagetest" targer="#">WebPagetest</a> (a.k.a WPT) to test 600+ home pages from the IR500 and Alexa-1000 list in 2016. All the tests were run in February 2017. Videos were generated and downloaded from WPT, processed into gif format, then incorporated into SpeedPerception . The video pairs presented were selected under a set of rules to better help us limit bias and randomness (<a href="https://github.com/pdey/SpeedPerception" target="#">the rules are available on GitHub</a>).</p>
 
-  <p>Based on the mathematical formulation of <a herf="https://sites.google.com/a/webpagetest.org/docs/using-webpagetest/metrics/speed-index" target="#">SpeedIndex</a> (SI) and <a href="https://github.com/WPO-Foundation/visualmetrics" target="#">PerceptualSpeedIndex</a> (PSI), comparison between videos mainly make sense when they have similar “Visual Complete” timings: the page rendering processes finish in comparable time-frames.</p>
+  <!-- <p>Based on the mathematical formulation of <a herf="https://sites.google.com/a/webpagetest.org/docs/using-webpagetest/metrics/speed-index" target="#">SpeedIndex</a> (SI) and <a href="https://github.com/WPO-Foundation/visualmetrics" target="#">PerceptualSpeedIndex</a> (PSI), comparison between videos mainly make sense when they have similar “Visual Complete” timings: the page rendering processes finish in comparable time-frames.</p>
+   -->
   <p><img src='/arch.png' class='img-responsive' alt='SpeedPerception study steps'/></p>
 
   <p>All the pre-processing steps and video curation code can be found on GitHub at: <a href="https://github.com/pdey/SpeedPerception" target="#">https://github.com/pdey/SpeedPerception</a></p>
   
-  <p>Once the crowd-sourcing component generates a sufficient amount of user data, we will open source the dataset, making it available to the web performance community, along with the analysis of what we discover.</p>
+  <p>
+  Once the crowd-sourcing component generates a sufficient amount of user data, we will open source the dataset, making it available to the web performance community, along with the analysis of what we discover. Results and dataset from Phase-1 of SpeedPerception study are already available at: <a href="https://github.com/pahammad/SpeedPerception" target="#">https://github.com/pahammad/SpeedPerception</a>
+  </p>
 
   <p><strong>Click on the <a href="/challenge">Challenge</a> link  to play!</strong></p>
   
@@ -30,9 +35,9 @@
   You will be presented with pairs of videos showing two websites loading.  Determine which website of the pair loaded faster, 
   pressing the appropriate button. 
   After submitting your feedback, click on Next to get the next pair of loading website videos.</p>
-  <p>You will be presented with a group of 21 pairs of videos. Make sure you choose the faster loading site!</p>
-  <p>In each group of 21, there are a few baseline videos: pairs of videos where the faster choice is known. 
-  Put effort into selecting the best videos, because the groups of 21 in which you correctly selected 
+  <p>You will be presented with a group of 11 pairs of videos. Make sure you choose the faster loading site!</p>
+  <p>In each group of 11, there are a few baseline videos: pairs of videos where the faster choice is known. 
+  Put effort into selecting the best videos, because the groups of 11 in which you correctly selected 
   the known faster choices will be added to the final dataset, helping create a robust dataset for all to use.</p>
 
 
