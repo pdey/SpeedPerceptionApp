@@ -1,6 +1,6 @@
 <!-- Landing page template -->
 <template name="home">
-  <h3> Which of the 2 websites do you perceive to be faster? </h3>
+  <h3>Which of these two websites do you perceive to be faster?</h3>
   {{> progressbar}}
   {{> abTest}}
   {{> user_info_modal}}
@@ -20,7 +20,7 @@
         <!-- Second video will load here -->
       </div>
       <div id="loaderIcon">
-        <span>Websites recorded on a Mobile device may take longer time to load. Thanks for being patient!</span><br/>
+        <span>Websites recorded on mobile devices may take longer to load. Thanks for being patient!</span><br/>
         <i class="fa fa-spinner fa-pulse fa-3x fa-fw"></i>
       </div>
     </div>
@@ -48,7 +48,7 @@
       {{/if}}
       <br/>
       <button class='btn btn-lg btn-secondary replay-btn'><span class="glyphicon glyphicon-repeat"></span> Replay</button>
-      <button class='btn btn-lg btn-primary pull-right show-next'><span class="glyphicon glyphicon-arrow-right"></span>Next</button> 
+      <button class='btn btn-lg btn-primary pull-right show-next'>Next <span class="glyphicon glyphicon-arrow-right"></span></button> 
   </form>
 </template>
 
@@ -63,7 +63,7 @@
         <span>{{> instructions}}</span>
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-default btn-success start-play"><span class="glyphicon glyphicon-arrow-right"></span>Start
+        <button type="button" class="btn btn-default btn-success start-play">Start <span class="glyphicon glyphicon-arrow-right"></span>
         </button>
       </div>
     </div>
@@ -73,41 +73,41 @@
 <template name="instructions">
   <ol>
     <li>
-      <h4>Watch the pair of videos that shows how two websites load. A video turns grey when it ends.</h4>
+      <h4>Watch the pair of videos showing two websites load. Videos turn grey when they end.</h4>
     </li>
 
     <li>
-      <h4>Based on videos, determine which website seems to load faster.</h4>
+      <h4>Based on the videos, determine which website seems to load faster.</h4>
     </li>
 
     <li>
       <h4>
-        Additionally, You will  be asked to accomplish some simple tasks that will help us measure the response timings with better accuracy.
+        Additionally, you will  be asked to accomplish some simple tasks that help us measure the response timings with better accuracy.
       </h4>
     </li>
 
     <li>
       <h4>Submit your feedback</h4>
       <ul>
-        <li><h5>Click on
+        <li><h4>Click 
          <button class='btn btn-default btn-success disabled'><span>{{#if isPhoneOrTablet}}Up {{else}}Left{{/if}}</span></button>
-         if website on the {{#if isPhoneOrTablet}} top {{else}} left {{/if}} appears to load faster.</h5>
+         if the website on the {{#if isPhoneOrTablet}} top {{else}} left {{/if}} appears to load faster.</h4>
         </li>
         <li>
-          <h5>Click on <button class='btn btn-default btn-success disabled'><span>About the Same</span></button> if both websites take about the same time to load.</h5>
+          <h4>Click <button class='btn btn-default btn-success disabled'><span>About the Same</span></button> if both websites take about the same time to load and you can't determine which loaded faster.</h4>
         </li>
         <li>
-          <h5>Click on <button class='btn btn-default btn-success disabled'><span>{{#if isPhoneOrTablet}}Down{{else}}Right{{/if}}</span></button> if website {{#if isPhoneOrTablet}} at the bottom {{else}} on the right {{/if}} appears to load faster.</h5>
+          <h4>Click <button class='btn btn-default btn-success disabled'><span>{{#if isPhoneOrTablet}}Down{{else}}Right{{/if}}</span></button> if the website {{#if isPhoneOrTablet}} at the bottom {{else}} on the right {{/if}} appears to load faster.</h4>
         </li>
       </ul>
     </li>
 
     <li>
-      <h4>Click on <button class='btn btn-default btn-secondary disabled'><span class="glyphicon glyphicon-repeat"></span> Replay</button> to play them again.</h4>
+      <h4>Click <button class='btn btn-default btn-secondary disabled'><span class="glyphicon glyphicon-repeat"></span> Replay</button> to replay both the videos and reassess the current task.</h4>
     </li>
 
     <li>
-      <h4>After submitting your feedback, click on <button class='btn btn-default btn-primary disabled'><span class="glyphicon glyphicon-arrow-right"></span>Next</button> to load next pair of videos.</h4>
+      <h4>After making your selection, click <button class='btn btn-default btn-primary disabled'>Next <span class="glyphicon glyphicon-arrow-right"></span></button> to continue on to the next task.</h4>
     </li>
   </ol>
 </template>
@@ -174,7 +174,7 @@
       <div class="modal-footer">
         <button type="button" class="btn btn-lg btn-success center-block visual-response">Done!
         </button>
-        <button type="button" class="btn btn-default btn-secondary replay-visual">Replay
+        <button type="button" class="btn btn-default btn-secondary replay-visual"><span class="glyphicon glyphicon-repeat"></span> Replay
         </button>
       </div>
     </div>
@@ -185,50 +185,50 @@
   <div class="modal" id="user-info-modal" role="dialog">
     <div class="modal-content">
       <div class="modal-header">
-        <h2 class="modal-title">Please fill in some basic information about you!</h2>
+        <h2 class="modal-title">Please tell us about yourself</h2>
       </div>
       <div class="modal-body text-center">
         <div class="form-group">
           <label> Gender:
             <select class="form-control" id="gender" name="gender">
+              <option value="non-disclosed">Prefer Not to Answer</option>
               <option value="f">Woman</option>
               <option value="m">Man</option>
-              <option value="other">Other than Man/Woman</option>
-              <option value="non-disclosed">Prefer Not to Disclose</option>
+              <option value="other">Other</option>
             </select>
           </label>
         </div>
         <div class="form-group">
           <label> Age:
             <select class="form-control" id="age" name="age">
+              <option value="non-disclosed">Prefer Not to Disclose</option>
               <option value="0-18">0-18</option>
-              <option value="18-35">18-25</option>
-              <option value="25-35">25-35</option>
-              <option value="35-50">35-50</option>
+              <option value="18-35">18-24</option>
+              <option value="25-35">25-34</option>
+              <option value="35-50">35-49</option>
               <option value="50-65">50-65</option>
               <option value="above-65">Above 65</option>
-              <option value="non-disclosed">Prefer Not to Disclose</option>
             </select>
           </label>
         </div>
         <div class="form-group">
           <label> Occupation:
             <select class="form-control" id="occupation" name="occupation">
+              <option value="non-disclosed">Prefer Not to Disclose</option>
               <option value="student">Student</option>
-              <option value="academics">Academics</option>
-              <option value="engineer">Engineer</option>
-              <option value="sales-and-marketing">Sales And Marketing</option>
+              <option value="academics">Academic</option>
+              <option value="engineer">Engineering</option>
+              <option value="sales-or-marketing">Sales or Marketing</option>
               <option value="finance">Finance</option>
               <option value="other">Other</option>
-              <option value="non-disclosed">Prefer Not to Disclose</option>
             </select> 
           </label>
         </div>
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-default btn-primary continue-play"><span class="glyphicon glyphicon-arrow-right"></span>Continue
+        <button type="button" class="btn btn-secondary pull-left" data-dismiss="modal">Skip</button>
+        <button type="button" class="btn btn-default btn-primary pull-right continue-play">Continue <span class="glyphicon glyphicon-arrow-right"></span>
         </button>
-        <button type="button" class="btn btn-secondary" data-dismiss="modal">Skip</button>
       </div>
     </div>
   </div>
