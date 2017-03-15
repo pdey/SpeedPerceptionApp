@@ -1,4 +1,4 @@
-# SpeedPerception
+# SpeedPerceptionApp
 
 ********************
 Overview
@@ -13,10 +13,10 @@ Experimental Design
 
 -- Data Collection:
 
-300+ URLs from IR500 list were tested on WPT (WebPageTest)
+600+ URLs from IR500  and Alexa-1000 list were tested on WPT (WebPageTest)
 Videos were generated from WPT filmstip 
 HARs were collected along with each video 
-Fixed browser and connection type (Cable, Chrome)
+Fixed browser (on Desktop and Mobile Device) and connection type (Cable, Chrome)
 
 -- Video Pairs Selection:
 
@@ -50,7 +50,7 @@ To install meteor:
 
 Checkout and go to webapp/
 
-> meteor
+> meteor run --settings settings.json
 
 App live on localhost:3000
 
