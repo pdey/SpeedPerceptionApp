@@ -167,3 +167,9 @@ img {
 #speedComparison {
   height: 100vh;
 }
+
+.navbar-inverse {
+  background-color: #0d2f66;
+  border-color: #030033;
+}
+
