@@ -254,9 +254,18 @@ Template.abTest.events({
 
 Template.abTest.onRendered(function(){
 
-  $('#user-info-modal').on('hidden.bs.modal', function() {
-    $('#guideModal').modal('show');
+  $('#guideModal').on('hidden.bs.modal', function() {
+    $('#user-info-modal').modal('show');
   });
+
+  $('#user-info-modal').on('hidden.bs.modal', function() {
+    // First visual response check.
+    console.log('start playing videos');
+
+    $('.visual-response-circle').css('background', 'black');
+    $('#visual-response-modal').modal('show');
+  });
+
 
   $('#visual-response-modal').on('shown.bs.modal', function() {
     console.log('Visual response modal shown');
@@ -285,8 +294,8 @@ Template.abTest.onRendered(function(){
     }
   });
 
-  $('#user-info-modal').modal('show');
-  // $('#guideModal').modal('show');
+  $('#guideModal').modal('show');
+  
   $('.show-next').prop('disabled', true);
   $('.visual-response').prop('disabled', true);
 
@@ -297,7 +306,7 @@ Template.abTest.onRendered(function(){
   // Reset session every 15 minutes.
   this.refresh_session = setInterval(function(){
     Session.set('userSessionKey', Random.id());
-  }, 15*60*1000);
+  }, 20*60*1000);
 });
 
 Template.abTest.onDestroyed(function(){
@@ -309,17 +318,8 @@ Template.abTest.onDestroyed(function(){
 Template.guide_modal.events({
   'click .start-play': function(e, t) {
     e.preventDefault();
-    console.log('start playing videos');
     t.$('#guideModal').modal('hide');
   }
-});
-
-Template.guide_modal.onRendered(function() {
-  $('#guideModal').on('hidden.bs.modal', function() {
-    // First visual response check.
-    $('.visual-response-circle').css('background', 'black');
-    $('#visual-response-modal').modal('show');
-  });
 });
 
 Template.user_info_modal.events({
