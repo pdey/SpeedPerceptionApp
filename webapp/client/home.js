@@ -2,6 +2,7 @@
 var videosForCurrentSession = null;
 var currentPair = null;
 var curIndex = 0;
+var visualResponseCount = 0;
 
 var _scoreDeps = new Deps.Dependency;
 var _progressDeps = new Deps.Dependency;
@@ -87,13 +88,15 @@ function saveResult(comp) {
   }
 
   // Show the visual response check modal after the 4th and 8th pair.
-  if (curIndex == 4 || curIndex == 8) {
+  if ( (curIndex == 4 && visualResponseCount < 2) ||
+     (curIndex == 8 && visualResponseCount < 3)) {
     $('.visual-response-circle').css('background', 'black');
     $('#visual-response-modal').modal('show'); 
   }
 }
 
 function saveVisualResponse() {
+  visualResponseCount++;
   var curTime = new Date().getTime();
   var latency = curTime - visualResponseStartTime;
 
@@ -300,6 +303,7 @@ Template.abTest.onRendered(function(){
   $('.visual-response').prop('disabled', true);
 
   curIndex = 0;
+  visualResponseCount = 0;
   // Generate a random hash for this user and store in session
   Session.set('userSessionKey', Random.id());
 
