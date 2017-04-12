@@ -256,6 +256,7 @@ Template.abTest.events({
 });
 
 Template.abTest.onRendered(function(){
+  $('#thanksModal').modal('show'); return;
 
   $('#guideModal').on('hidden.bs.modal', function() {
     $('#user-info-modal').modal('show');
