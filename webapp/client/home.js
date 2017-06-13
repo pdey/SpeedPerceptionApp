@@ -29,8 +29,14 @@ function selectVideosForUser() {
   var videoGroups = _.groupBy(testVideos, "datasetId");
   _.each(_.keys(videoGroups), function(datasetId){
     var videosByDataset = videoGroups[datasetId];
-
-    var selectedFromDataset = _.chain(videosByDataset).sample(2).value();
+    // Select 2 least voted videos from this dataset.
+    var selectedFromDataset = _.chain(videosByDataset)
+      .sortBy(function(pair) {
+        let pairId = pair._id;
+        return VideoPairVoteCount.findOne({pairId: pairId}).count
+      })
+      .first(2)
+      .value()
     _.each(selectedFromDataset, function(pair) {selectedVideos.push(pair)});
   });
   var finalizedVideos = _.chain(selectedVideos).shuffle().value();
@@ -57,7 +63,7 @@ function getNextVideoPair() {
 
   var pair = videosForCurrentSession[curIndex];
   curIndex += 1;
-  return pair;  
+  return pair;
 };
 
 function getVideoURL(wptId) {
@@ -68,9 +74,9 @@ function getVideoURL(wptId) {
 function saveResult(comp) {
   var curTime = new Date().getTime();
   var viewingDuration = curTime - videoStartTime;
-  
+
   console.log(currentPair, comp);
-  
+
   Meteor.call('testResults.insert',
     {
       pairId: currentPair._id,
@@ -91,7 +97,7 @@ function saveResult(comp) {
   if ( (curIndex == 4 && visualResponseCount < 2) ||
      (curIndex == 8 && visualResponseCount < 3)) {
     $('.visual-response-circle').css('background', 'black');
-    $('#visual-response-modal').modal('show'); 
+    $('#visual-response-modal').modal('show');
   }
 }
 
@@ -110,7 +116,7 @@ function saveVisualResponse() {
 function preloadGifs(url1, url2) {
   // Remove existing gif images.
   $('#loaderIcon').show();
-  
+
   if($('#gifVideo1')) {
     $('#gifVideo1').attr('src', '');
   }
@@ -120,7 +126,7 @@ function preloadGifs(url1, url2) {
 
   $('.first-gif').empty();
   $('.second-gif').empty();
-  
+
   var firstGif = new Image();
   var secondGif = new Image();
 
@@ -134,11 +140,11 @@ function preloadGifs(url1, url2) {
 
   function syncGifLoad(video) {
     numLoaded++;
-    
+
     if(numLoaded == 2) {
       console.log("Both loaded");
-      $('#loaderIcon').hide();    
-     
+      $('#loaderIcon').hide();
+
       // Check for mobile device.
       if (Meteor.Device.isPhone()) {
         $(firstGif).attr('id', 'gifVideo1').addClass('height-responsive');
@@ -160,7 +166,7 @@ function preloadGifs(url1, url2) {
 };
 
 function conclude() {
-  $('#thanksModal').modal('show');  
+  $('#thanksModal').modal('show');
 };
 
 function isVerticalDisplayDevice() {
@@ -229,7 +235,7 @@ Template.abTest.events({
     t.$('.show-next').prop('disabled', false);
     t.$('.left-btn').hide();
     t.$('.right-btn').hide();
-    
+
     e.preventDefault();
     saveResult(0);
   },
@@ -239,7 +245,7 @@ Template.abTest.events({
     t.$('.show-next').prop('disabled', false);
     t.$('.mid-btn').hide();
     t.$('.right-btn').hide();
-    
+
     e.preventDefault();
     saveResult(1);
   },
@@ -249,14 +255,14 @@ Template.abTest.events({
     t.$('.show-next').prop('disabled', false);
     t.$('.mid-btn').hide();
     t.$('.left-btn').hide();
-    
+
     e.preventDefault();
     saveResult(2);
   }
 });
 
 Template.abTest.onRendered(function(){
-  
+
   $('#guideModal').on('hidden.bs.modal', function() {
     $('#user-info-modal').modal('show');
   });
@@ -273,7 +279,7 @@ Template.abTest.onRendered(function(){
   $('#visual-response-modal').on('shown.bs.modal', function() {
     console.log('Visual response modal shown');
     let delay = 4000;
-    
+
     Meteor.setTimeout(function() {
       console.log('changing circle color');
       $('.visual-response').prop('disabled', false);
@@ -298,7 +304,7 @@ Template.abTest.onRendered(function(){
   });
 
   $('#guideModal').modal('show');
-  
+
   $('.show-next').prop('disabled', true);
   $('.visual-response').prop('disabled', true);
 
@@ -368,7 +374,7 @@ Template.thanks_modal.events({
     t.$('#feedback-text').prop('disabled', true);
     t.$('.send-feedback').prop('disabled', true);
     if(feedback && feedback.length > 3) {
-      Meteor.call('feedbacks.insert', feedback, Session.get('userSessionKey'));      
+      Meteor.call('feedbacks.insert', feedback, Session.get('userSessionKey'));
     }
     // t.$('#thanksModal').modal('hide');
   }
@@ -431,12 +437,12 @@ Template.visual_response_modal.events({
     t.$('.visual-response').prop('disabled', true);
     t.$('.visual-response-circle').css('background', 'black');
     let delay = 4000;
-    
+
     Meteor.setTimeout(function() {
       console.log('changing circle color');
       $('.visual-response').prop('disabled', false);
       $('.visual-response-circle').css('background', 'blue');
       visualResponseStartTime = new Date().getTime();
-    }, delay);  
+    }, delay);
   }
 });

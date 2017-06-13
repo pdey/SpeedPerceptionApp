@@ -23,7 +23,8 @@ Router.route('/challenge', {
 
 	waitOn: function() {
 		return [
-		Meteor.subscribe('videoPairs')
+		Meteor.subscribe('videoPairs'),
+		Meteor.subscribe('videoPairVoteCount')
 		];
 	},
 
