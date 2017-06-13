@@ -30,7 +30,7 @@ function getVideoURL(wptId) {
 function preloadGifs(url1, url2) {
   // Remove existing gif images.
   $('#loaderIcon').show();
-  
+
   if($('#gifVideo1')) {
     $('#gifVideo1').attr('src', '');
   }
@@ -40,7 +40,7 @@ function preloadGifs(url1, url2) {
 
   $('.first-gif').empty();
   $('.second-gif').empty();
-  
+
   var firstGif = new Image();
   var secondGif = new Image();
 
@@ -54,10 +54,10 @@ function preloadGifs(url1, url2) {
 
   function syncGifLoad(video) {
     numLoaded++;
-    
+
     if(numLoaded == 2) {
       console.log("Both loaded");
-      $('#loaderIcon').hide();    
+      $('#loaderIcon').hide();
       $(firstGif).attr('id', 'gifVideo1').addClass('img-responsive');
       $(secondGif).attr('id', 'gifVideo2').addClass('img-responsive');
       $('.first-gif').append($(firstGif));
@@ -194,7 +194,7 @@ Template.singleDataset.helpers({
     if(domainSearchCriteria.hasVideo) {
       var dataset = this.name;
       var res = _.filter(res, function(d){
-        return VideoData.findOne({dataset: dataset, wptId: d.wpt_test_id}); 
+        return VideoData.findOne({dataset: dataset, wptId: d.wpt_test_id});
       });
     }
     return res;
@@ -291,7 +291,7 @@ Template.singleDomain.events({
     var dataset_name = e.target.dataset_name.value;
     var wpt_test_id = e.target.wpt_test_id.value;
     Meteor.call('videos.remove', dataset_name, wpt_test_id);
-  } 
+  }
 });
 
 Template.singleDomain.helpers({
@@ -359,12 +359,12 @@ Template.videoPairUpload.events({
       newPair.wptId_1 = wptId_1;
       newPair.wptId_2 = wptId_2;
       newPair.type = type;
-      
+
       if(newPair.type == 'train') {
         newPair.result = result;
       } else {
         newPair.criteria = criteria;
-      }  
+      }
 
       Meteor.call('videoPairs.insert', newPair);
       return true;
@@ -431,5 +431,36 @@ Template.previewVideosModal.events({
   'shown.bs.modal #showVideos': function(e, t) {
     console.log('showing videos');
     displayVideos();
+  }
+});
+
+/* Template: adminConsole */
+Template.adminConsole.events({
+  'click .vote-count-btn': function(e, t) {
+    e.preventDefault();
+    // console.log(`clicked`);
+    $('#voteCounts').modal('show');
+  }
+});
+
+/* Template: voteCountDisplay */
+Template.voteCountDisplay.helpers({
+  voteCounts: function() {
+    return voteCounts = VideoPairVoteCount.find({}, {sort: {count: 1}});
+  }
+});
+
+/* Template: voteCountUpdater */
+Template.voteCountUpdater.events({
+  'click .update-count-btn': function(e, t) {
+    console.log('updating vote counts')
+    e.preventDefault();
+    var testVideos = VideoPairs.find({type: "test", approved: true}).fetch();
+    _.each(testVideos, function(pair) {
+      var pairId = pair._id;
+      var count = TestResults.find({pairId: pairId}).count();
+      // console.log(`${pairId}:${count}`);
+      Meteor.call('videoPairVoteCount.insertOrUpdate', pairId, count)
+    })
   }
 });

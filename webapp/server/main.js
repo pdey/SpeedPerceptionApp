@@ -35,6 +35,10 @@ Meteor.publish('expertComments', function() {
   return ExpertComments.find();
 });
 
+Meteor.publish('videoPairVoteCount', function() {
+  return VideoPairVoteCount.find();
+});
+
 
 Meteor.methods({
   'datasets.insert'(name, data) {
@@ -45,7 +49,7 @@ Meteor.methods({
 
     console.log(`Inserting dataset:${name}`);
     console.log(`Accessed by: ${this.userId}`);
-      
+
     DataSets.insert({
       name: name,
       data: data
@@ -104,17 +108,36 @@ Meteor.methods({
       {pairId:obj.pairId},
       {session: obj.session}]
     });
-    
+
     // console.log(existing)
+    var updateVoteCount = true;
     if(existing) {
+      updateVoteCount = false;
       TestResults.remove({_id: existing._id});
     }
     _.extend(obj, {
         ip: conn.clientAddress,
         userAgent: conn.httpHeaders['user-agent'],
-        timestamp: new Date() 
+        timestamp: new Date()
       });
     TestResults.insert(obj);
+
+    // Update vote count
+    var videoPair = VideoPairs.findOne({_id:obj.pairId})
+    if (videoPair.type == "train") {
+      updateVoteCount = false
+    }
+    if(updateVoteCount) {
+      var pairVoteCount = VideoPairVoteCount.findOne({pairId: obj.pairId});
+      // console.log('Before insert')
+      // console.log(pairVoteCount)
+      if (!!pairVoteCount) {
+        var count = pairVoteCount.count + 1;
+        VideoPairVoteCount.update(pairVoteCount._id, {$set: {count: count}});
+      } else {
+        VideoPairVoteCount.insert({pairId: obj.pairId, count: 1});
+      }
+    }
   },
 
   'userInfo.insert'(gender, age, occupation, session) {
@@ -164,6 +187,19 @@ Meteor.methods({
       comment: comment,
       timestamp: new Date()
     });
+  },
+
+  'videoPairVoteCount.insertOrUpdate'(pairId, voteCount) {
+    if (! this.userId) {
+      throw new Meteor.Error('not-authorized');
+    }
+
+    var existing = VideoPairVoteCount.findOne({pairId: pairId})
+    if (!!existing) {
+      VideoPairVoteCount.update(existing._id, {$set: {count: voteCount}});
+    } else {
+      VideoPairVoteCount.insert({pairId: pairId, count: voteCount})
+    }
   },
 
   'purge.dataset'(datasetId) {

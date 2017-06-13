@@ -14,7 +14,7 @@ Router.route('/', {
 			return;
 		}
 		this.render('about');
-	}       
+	}
 });
 
 // SpeedPerception experiment page.
@@ -121,7 +121,8 @@ Router.route('/admin', {
 		Meteor.subscribe('videos'),
 		Meteor.subscribe('videoPairs'),
 		Meteor.subscribe('videoUploads'),
-		Meteor.subscribe('testResults')
+		Meteor.subscribe('testResults'),
+		Meteor.subscribe('videoPairVoteCount')
 		];
 	},
 

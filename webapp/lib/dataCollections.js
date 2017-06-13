@@ -60,3 +60,6 @@ UserFeedbacks = new Meteor.Collection('userFeedbacks');
 
 // Expert comments on video pairs.
 ExpertComments = new Meteor.Collection('expertComments');
+
+// Video pair vote counts.
+VideoPairVoteCount = new Meteor.Collection('videoPairVoteCount')

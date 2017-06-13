@@ -3,6 +3,7 @@
   {{#if currentUser}}
   {{> adminConsole}}
   {{> previewVideosModal}}
+  {{> voteCountUpdater}}
   {{else}}
   {{> adminAuth}}
   {{/if}}
@@ -21,6 +22,9 @@
 
 <!-- Admin Console -->
 <template name="adminConsole">
+  <div>
+    <button type="button" class="btn btn-lg btn-primary vote-count-btn">Show Vote Counts</button>
+  </div>
   {{> datasetUploader}}
   {{> datasetViewer}}
   {{> videoPairUpload}}
@@ -36,9 +40,9 @@
     <button type='submit' class='btn btn-primary'>
       <span class="glyphicon glyphicon-upload" aria-hidden="true"></span>
       Upload
-    </button> 
+    </button>
   </form>
-  <hr/>  
+  <hr/>
 </template>
 
 <!-- Dataset viewer -->
@@ -69,8 +73,8 @@
           <label><input class='check-video' type="checkbox" value=""/>has Video</label>
         </div>
         {{> downloadResults}}
-        {{> downloadDataset}}        
-        <ul> 
+        {{> downloadDataset}}
+        <ul>
           <li><span>Total {{searchData.length}} results</span></li>
           {{#each searchData}}
           {{> singleDomain}}
@@ -95,10 +99,10 @@
         <h2> Upload Video Pair </h2>
         <form id='addPair' class='form' method='POST'>
           <div class="form-group">
-            <label> Dataset: 
+            <label> Dataset:
               <select class="form-control" name="dataset">
                 {{#each datasets}}
-                <option value="{{_id}}">{{name}}</option> 
+                <option value="{{_id}}">{{name}}</option>
                 {{/each}}
               </select>
             </label>
@@ -113,12 +117,12 @@
               <input class="form-control" type="text" name="wpt_test_id_2"/>
             </label>
           </div>
-          
+
           <div class="form-group">
-            <label>Type: 
+            <label>Type:
               <select id="dataType" class="form-control" name="type">
                 <option value="test">Test</option>
-                <option value="train">Train</option> 
+                <option value="train">Train</option>
               </select>
             </label>
           </div>
@@ -148,10 +152,10 @@
       <div class="col-lg-6">
         <h2>Uploaded Pairs</h2>
         <div class="form-group">
-          <label> Dataset: 
+          <label> Dataset:
             <select class="form-control view-dataset-filter" name="dataset">
               {{#each datasets}}
-              <option value="{{_id}}">{{name}}</option> 
+              <option value="{{_id}}">{{name}}</option>
               {{/each}}
             </select>
           </label>
@@ -160,7 +164,7 @@
           {{#each videoPairs}}
           <li>{{> singleVideoPairDisplay}}</li>
           {{/each}}
-        </ul>        
+        </ul>
       </div>
     </div>
   </div>
@@ -170,7 +174,7 @@
   <a href="#" class="review-videos"><span>{{datasetName datasetId}}, {{wptId_1}}, {{wptId_2}}, {{type}},
     {{#if result}}
     {{result}}
-    {{else}} 
+    {{else}}
     {{criteria}}
     {{/if}}
   </span></a>
@@ -219,7 +223,7 @@
         <h2 class="modal-title">Gif Videos</h2>
       </div>
       <div class="modal-body text-centered">
-        <form class='form' id='visualFeedback'> 
+        <form class='form' id='visualFeedback'>
           {{> gifView}}
           <div class="container text-center">
             <button class='btn btn-lg btn-secondary replay-btn'><span class="glyphicon glyphicon-repeat"></span> Replay</button>
@@ -232,4 +236,29 @@
       </div>
     </div>
   </div>
+</template>
+
+<template name="voteCountUpdater">
+  <div class="modal" id="voteCounts" role="dialog" tabindex="-1">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3 class="modal-title">Pairwise Vote Counts</h3>
+      </div>
+      <div class="modal-body text-center">
+        {{> voteCountDisplay}}
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default btn-primary update-count-btn">Update</button>
+        <button type="button" class="btn btn-default btn-secondary" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</template>
+
+<template name="voteCountDisplay">
+  {{#each voteCounts}}
+    <div>
+      {{pairId}} - {{count}}
+    </div>
+  {{/each}}
 </template>
